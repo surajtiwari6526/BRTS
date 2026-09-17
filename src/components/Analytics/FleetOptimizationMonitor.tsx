@@ -41,7 +41,7 @@ export const FleetOptimizationMonitor: React.FC = () => {
   };
 
   return (
-    <div className="glass-card rounded-3xl p-6 border border-amber-500/30 bg-gradient-to-b from-[#181310] via-[#0F121C] to-[#0A0D14] space-y-6">
+    <div className="glass-card rounded-3xl p-6 border border-orange-300/60 bg-orange-50/35 space-y-6">
       
       {/* Header Title */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-amber-500/20 pb-4">
@@ -51,7 +51,7 @@ export const FleetOptimizationMonitor: React.FC = () => {
           </div>
           <div>
             <h2 className="text-lg font-black font-mono text-white tracking-wider flex items-center space-x-2">
-              <span>AI FLEET SIZING & LOW-RUSH BUS OPTIMIZATION</span>
+              <span>FLEET SIZING & LOW-RUSH BUS OPTIMIZATION</span>
               <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
                 DYNAMIC RATIONALIZATION
               </span>
@@ -79,7 +79,7 @@ export const FleetOptimizationMonitor: React.FC = () => {
             <span className="text-xs font-mono text-amber-400 font-bold uppercase tracking-wider block">
               LOW-RUSH CORRIDOR EVALUATION: ROUTE 12
             </span>
-            <h3 className="text-base font-bold font-mono text-white">
+              <h3 className="text-base font-bold font-mono text-white">
               {route12Optimization.routeName}
             </h3>
           </div>
@@ -97,7 +97,7 @@ export const FleetOptimizationMonitor: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
           
           {/* Active vs Required */}
-          <div className="p-3.5 rounded-xl bg-black/50 border border-white/10 space-y-1">
+            <div className="p-3.5 rounded-xl bg-white/60 border border-slate-200 space-y-1">
             <span className="text-gray-400 text-[10px] block">ACTIVE FLEET VS REQUIRED</span>
             <div className="flex items-baseline space-x-2">
               <span className="text-2xl font-black text-white">{route12Optimization.totalActiveBuses} Buses</span>
@@ -109,7 +109,7 @@ export const FleetOptimizationMonitor: React.FC = () => {
           </div>
 
           {/* Excess Fleet Identified */}
-          <div className="p-3.5 rounded-xl bg-black/50 border border-amber-500/30 space-y-1">
+            <div className="p-3.5 rounded-xl bg-orange-50/60 border border-orange-200 space-y-1">
             <span className="text-amber-400 text-[10px] block font-bold">EXCESS UNNEEDED BUSES</span>
             <div className="text-2xl font-black text-amber-300">
               {route12Optimization.excessBusesCount} Surplus Vehicles
@@ -119,7 +119,7 @@ export const FleetOptimizationMonitor: React.FC = () => {
             </p>
           </div>
 
-          {/* AI Directive */}
+          {/* Operations directive */}
           <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1">
             <span className="text-emerald-400 text-[10px] block font-bold">OPTIMIZATION IMPACT</span>
             <div className="text-sm font-bold text-white">
@@ -153,7 +153,7 @@ export const FleetOptimizationMonitor: React.FC = () => {
           {emptyBuses.map((bus) => (
             <div
               key={bus.id}
-              className="p-4 rounded-2xl bg-gradient-to-b from-[#151923] to-[#0A0D14] border border-amber-500/30 hover:border-amber-400 transition-all space-y-3 font-mono text-xs"
+              className="p-4 rounded-2xl bg-white/65 border border-orange-200 hover:border-orange-400 transition-all space-y-3 font-mono text-xs"
             >
               {/* Bus Header */}
               <div className="flex items-center justify-between border-b border-white/10 pb-2">
@@ -208,7 +208,7 @@ export const FleetOptimizationMonitor: React.FC = () => {
           ))}
 
           {emptyBuses.length === 0 && (
-            <div className="col-span-3 p-6 rounded-2xl bg-black/40 border border-white/10 text-center text-xs font-mono text-emerald-400 flex flex-col items-center justify-center space-y-2">
+            <div className="col-span-3 p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-center text-xs font-mono text-emerald-700 flex flex-col items-center justify-center space-y-2">
               <ShieldCheck className="h-8 w-8 text-emerald-400" />
               <span>All empty/underutilized buses have been successfully reallocated to high-surge corridors!</span>
             </div>

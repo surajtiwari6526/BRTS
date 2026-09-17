@@ -16,6 +16,7 @@ export interface Bus {
   status: BusStatus;
   isDiverted: boolean;
   divertedTo?: string;
+  pathIndex?: number;
 }
 
 export type RushLevel = 'CRITICAL_SURGE' | 'HIGH_RUSH' | 'MODERATE_RUSH' | 'LOW_RUSH';
@@ -25,7 +26,7 @@ export interface BRTSStop {
   name: string;
   lat: number;
   lng: number;
-  routeId: 'ROUTE_9' | 'ROUTE_12' | 'SHARED';
+  routeId: string;
   ticketsSoldLastHour?: number;
   waitingPassengers?: number;
   rushLevel?: RushLevel;
@@ -34,7 +35,7 @@ export interface BRTSStop {
 export interface StationTicketingData {
   stopId: string;
   stationName: string;
-  routeId: 'ROUTE_9' | 'ROUTE_12' | 'SHARED';
+  routeId: string;
   ticketsSoldLastHour: number;
   totalRevenueRupees: number;
   waitingPassengers: number;
@@ -83,4 +84,41 @@ export interface DispatchLog {
   targetRoute: string;
   dpr: number;
   benefit: number;
+}
+
+export interface DispatchRecommendation {
+  title: string;
+  action: string;
+  recommendedBusId?: string;
+  rationale: string;
+  confidence: number;
+  priority: 'HIGH' | 'MEDIUM' | 'LOW';
+}
+
+export interface LocalModelState {
+  status: 'READY' | 'TRAINING';
+  version: string;
+  trainingExamples: number;
+  featureCount: number;
+  trainedAt: string | null;
+  sourceName: string;
+  uploadedRows: number;
+}
+
+export interface TransitImpactMetrics {
+  passengerMinutesSaved: number;
+  estimatedFuelLitersAvoided: number;
+  estimatedCo2KgAvoided: number;
+  networkBalanceScore: number;
+  resilienceScore: number;
+  overloadedBuses: number;
+  lowLoadBuses: number;
+}
+
+export type TransitScenario = 'PEAK_SURGE' | 'STATION_CLOSURE' | 'MONSOON_DELAY';
+
+export interface ActiveScenario {
+  type: TransitScenario;
+  label: string;
+  description: string;
 }

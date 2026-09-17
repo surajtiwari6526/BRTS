@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Polyline, Marker, Popup, CircleMarker, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { Bus, BRTSStop } from '../../types/brts';
+import { ROUTE_PATHS, getRoutePath } from '../../data/routePaths';
 
 interface LeafletMapWrapperProps {
   buses: Bus[];
@@ -13,6 +14,14 @@ interface LeafletMapWrapperProps {
   onSelectBus?: (busId: string) => void;
   onDivertBus?: (busId: string) => void;
 }
+
+const routeLineColors: Record<string, string> = {
+  ROUTE_1: '#163b64', ROUTE_2: '#2f8f5b', ROUTE_3: '#e87518', ROUTE_4: '#8b5e34',
+  ROUTE_5: '#a33f2b', ROUTE_6: '#5b7185', ROUTE_7: '#176b87', ROUTE_8: '#96711f',
+  ROUTE_9: '#c95716', ROUTE_11: '#6d4c8d', ROUTE_12: '#2f8f5b', ROUTE_14: '#b85c38',
+  ROUTE_15: '#2d6b8f', ROUTE_16: '#98752d', ROUTE_17: '#4d8064', ROUTE_18: '#7a536f',
+  ROUTE_101: '#163b64', ROUTE_201: '#e87518'
+};
 
 // Sub-component to smoothly fly map to new center/zoom
 function MapViewFlyTo({ center, zoom }: { center: [number, number]; zoom: number }) {
@@ -27,21 +36,21 @@ const createBusIcon = (bus: Bus, isSelected: boolean) => {
   const isOverloaded = bus.status === 'CRITICAL_OVERLOAD' || bus.status === 'OVERLOAD';
   const isDiverted = bus.isDiverted;
 
-  let borderColor = '#00F2FE'; // Electric Cyan
-  let fillColor = '#0A0D14';
+  let borderColor = '#163b64';
+  let fillColor = '#f7f8f8';
   let badgeColor = 'bg-cyan-500';
   let ringHtml = '';
 
   if (isOverloaded) {
-    borderColor = '#FF3366'; // Neon Crimson
+    borderColor = '#c95716';
     badgeColor = 'bg-red-500';
     ringHtml = `<div class="pulsing-ring-red"></div>`;
   } else if (isDiverted) {
-    borderColor = '#FFB300'; // Amber Pulse
+    borderColor = '#e87518';
     badgeColor = 'bg-amber-500';
     ringHtml = `<div class="pulsing-ring-amber"></div>`;
   } else if (bus.status === 'UNDERUTILIZED') {
-    borderColor = '#00E676'; // Electric Emerald
+    borderColor = '#2f8f5b';
     badgeColor = 'bg-emerald-500';
   }
 
@@ -78,8 +87,8 @@ const createBusIcon = (bus: Bus, isSelected: boolean) => {
         font-family: monospace;
         font-size: 9px;
         font-weight: bold;
-        color: #FFFFFF;
-        background: rgba(10, 13, 20, 0.9);
+        color: #17263d;
+        background: rgba(255, 255, 255, 0.94);
         border: 1px solid ${borderColor};
         padding: 1px 4px;
         border-radius: 4px;
@@ -177,26 +186,17 @@ const getBusRouteDetails = (bus: Bus) => {
       progressPercent: Math.min(95, Math.max(25, bus.plfPercent > 100 ? 80 : 45))
     };
   }
-  if (bus.routeId === 'ROUTE_9') {
-    return {
-      origin: 'RTO Circle BRTS Hub',
-      destination: 'LD Engineering College Terminal',
-      corridor: 'Corridor 9 (RTO → LD College)',
-      originLat: 23.0664,
-      originLng: 72.5642,
-      destLat: 23.0338,
-      destLng: 72.5468,
-      progressPercent: Math.min(95, Math.max(20, Math.round(bus.speedKmph * 2.4)))
-    };
-  }
+  const path = getRoutePath(bus.routeId);
+  const start = path[0];
+  const end = path[path.length - 1];
   return {
-    origin: 'RTO Circle BRTS Hub',
-    destination: 'CTM Cross Road Terminal',
-    corridor: 'Corridor 12 (RTO → CTM)',
-    originLat: 23.0664,
-    originLng: 72.5642,
-    destLat: 22.9912,
-    destLng: 72.6310,
+    origin: bus.isDiverted ? 'Nehrunagar Circle (Reroute Point)' : `Route ${bus.routeId.replace('ROUTE_', '')} origin`,
+    destination: bus.isDiverted ? 'LD Engineering College / Jaimangal' : `Route ${bus.routeId.replace('ROUTE_', '')} terminal`,
+    corridor: bus.isDiverted ? 'Express 9X dynamic reroute' : `Published Ahmedabad BRTS route ${bus.routeId.replace('ROUTE_', '')}`,
+    originLat: start[0],
+    originLng: start[1],
+    destLat: end[0],
+    destLng: end[1],
     progressPercent: Math.min(95, Math.max(20, Math.round(bus.speedKmph * 2.2)))
   };
 };
@@ -248,14 +248,14 @@ export default function LeafletMapWrapper({
   return (
     <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
       {/* Interactive Floating Control Bar */}
-      <div className="absolute top-4 right-4 z-[400] flex flex-wrap gap-2 items-center bg-[#0A0D14]/90 p-2 rounded-xl border border-white/15 backdrop-blur-md shadow-2xl">
+      <div className="absolute top-4 right-4 z-[400] flex flex-wrap gap-2 items-center bg-white/90 p-2 rounded-xl border border-slate-200 backdrop-blur-md shadow-xl">
         {/* View Range Buttons */}
         <button
           onClick={() => setMapTarget({ center: INDIA_CENTER, zoom: 5 })}
           className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center space-x-1 ${
             mapTarget.zoom === 5
-              ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-glow-cyan'
-              : 'bg-white/5 text-gray-300 hover:bg-white/15'
+              ? 'bg-[#163b64] text-white shadow-md'
+              : 'bg-slate-100 text-slate-600 hover:bg-orange-50'
           }`}
         >
           <span>🇮🇳</span>
@@ -266,8 +266,8 @@ export default function LeafletMapWrapper({
           onClick={() => setMapTarget({ center: BRTS_CENTER, zoom: 13 })}
           className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center space-x-1 ${
             mapTarget.zoom === 13
-              ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-black shadow-glow-emerald'
-              : 'bg-white/5 text-gray-300 hover:bg-white/15'
+              ? 'bg-[#2f8f5b] text-white shadow-md'
+              : 'bg-slate-100 text-slate-600 hover:bg-orange-50'
           }`}
         >
           <span>🚌</span>
@@ -277,11 +277,11 @@ export default function LeafletMapWrapper({
         <div className="h-4 w-[1px] bg-white/20 mx-1" />
 
         {/* Map Provider Selector */}
-        <div className="flex bg-black/40 rounded-lg p-0.5 border border-white/10 text-[11px] font-mono">
+        <div className="flex bg-slate-100 rounded-lg p-0.5 border border-slate-200 text-[11px] font-mono">
           <button
             onClick={() => setProvider('google-roadmap')}
             className={`px-2 py-1 rounded-md font-semibold transition-all ${
-              provider === 'google-roadmap' ? 'bg-cyan-500 text-black' : 'text-gray-400 hover:text-white'
+              provider === 'google-roadmap' ? 'bg-[#e87518] text-white' : 'text-slate-500 hover:text-slate-900'
             }`}
           >
             Google Map
@@ -290,7 +290,7 @@ export default function LeafletMapWrapper({
           <button
             onClick={() => setProvider('google-satellite')}
             className={`px-2 py-1 rounded-md font-semibold transition-all ${
-              provider === 'google-satellite' ? 'bg-cyan-500 text-black' : 'text-gray-400 hover:text-white'
+              provider === 'google-satellite' ? 'bg-[#e87518] text-white' : 'text-slate-500 hover:text-slate-900'
             }`}
           >
             Satellite
@@ -299,7 +299,7 @@ export default function LeafletMapWrapper({
           <button
             onClick={() => setProvider('carto')}
             className={`px-2 py-1 rounded-md font-semibold transition-all ${
-              provider === 'carto' ? 'bg-cyan-500 text-black' : 'text-gray-400 hover:text-white'
+              provider === 'carto' ? 'bg-[#e87518] text-white' : 'text-slate-500 hover:text-slate-900'
             }`}
           >
             Dark Mode
@@ -324,32 +324,24 @@ export default function LeafletMapWrapper({
           maxZoom={19}
         />
 
-        {/* Route 9 Polyline - Neon Crimson Congested Corridor */}
-        <Polyline
-          positions={route9Path}
-          pathOptions={{
-            color: '#FF3366',
-            weight: 5,
-            opacity: 0.7,
-            dashArray: '8, 8'
-          }}
-        />
+        {/* Published Ahmedabad BRTS route corridors from the supplied schedule. */}
+        {Object.entries(ROUTE_PATHS).map(([routeId, path]) => (
+          <Polyline
+            key={routeId}
+            positions={path}
+            pathOptions={{
+              color: routeLineColors[routeId] ?? '#163b64',
+              weight: routeId === 'ROUTE_9' || routeId === 'ROUTE_12' ? 5 : 3,
+              opacity: routeId === 'ROUTE_9' || routeId === 'ROUTE_12' ? 0.82 : 0.52
+            }}
+          />
+        ))}
 
-        {/* Route 12 Polyline - Electric Emerald Corridor */}
-        <Polyline
-          positions={route12Path}
-          pathOptions={{
-            color: '#00E676',
-            weight: 4,
-            opacity: 0.7
-          }}
-        />
-
-        {/* Route 9 Express Polyline - Deep Violet Reroute Path */}
+        {/* Express 9X bridge-safe reroute path */}
         <Polyline
           positions={route9ExpressPath}
           pathOptions={{
-            color: '#7C4DFF',
+            color: '#e87518',
             weight: 6,
             opacity: 0.85,
             dashArray: '12, 6'
@@ -365,7 +357,7 @@ export default function LeafletMapWrapper({
               [selectedBusTrip.destLat, selectedBusTrip.destLng]
             ]}
             pathOptions={{
-              color: '#00F2FE',
+              color: '#e87518',
               weight: 6,
               opacity: 0.95
             }}
@@ -523,7 +515,7 @@ export default function LeafletMapWrapper({
       </MapContainer>
 
       {/* Map Legend Overlay */}
-      <div className="absolute bottom-4 left-4 z-[400] rounded-xl bg-[#0A0D14]/90 p-3 border border-white/10 backdrop-blur-md text-[11px] space-y-1.5 font-mono shadow-xl hidden sm:block">
+      <div className="absolute bottom-4 left-4 z-[400] rounded-xl bg-white/90 p-3 border border-slate-200 backdrop-blur-md text-[11px] space-y-1.5 font-mono shadow-xl hidden sm:block">
         <div className="text-[10px] text-gray-400 uppercase tracking-wider font-bold mb-1">BRTS Corridor & Station Legend</div>
         <div className="flex items-center space-x-2">
           <span className="text-amber-400 font-bold">🚩</span>

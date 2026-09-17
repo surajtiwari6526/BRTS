@@ -8,22 +8,35 @@
   :root {
     --font-inter: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+    --brts-ink: #17263d;
+    --brts-muted: #667384;
+    --brts-silver: #dfe3e6;
+    --brts-blue: #163b64;
+    --brts-saffron: #e87518;
+    --brts-orange: #f28c28;
+    --brts-green: #2f8f5b;
   }
   
   body {
-    background-color: #0A0D14;
-    color: #F3F4F6;
+    background-color: #e7eaec;
+    color: var(--brts-ink);
     font-family: var(--font-inter), sans-serif;
     overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 8% 8%, rgba(22, 59, 100, 0.13), transparent 28rem),
+      radial-gradient(circle at 92% 18%, rgba(232, 117, 24, 0.14), transparent 24rem),
+      linear-gradient(135deg, #f7f8f8 0%, #e7eaec 56%, #d9dee1 100%);
+    background-attachment: fixed;
   }
 }
 
-/* Custom dark glassmorphism card */
+/* Light glass surfaces shared across the operations views. */
 .glass-card {
-  background: rgba(22, 28, 45, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.76);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 40px rgba(22, 59, 100, 0.1), inset 0 1px rgba(255, 255, 255, 0.78);
 }
 
 .glass-card-hover {
@@ -31,10 +44,36 @@
 }
 
 .glass-card-hover:hover {
-  background: rgba(30, 39, 62, 0.85);
-  border-color: rgba(0, 242, 254, 0.3);
-  box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(232, 117, 24, 0.45);
+  box-shadow: 0 14px 28px rgba(22, 59, 100, 0.14);
 }
+
+/* Preserve legibility while existing views transition away from dark tokens. */
+[class*="bg-\\[\\#0A0D14\\]"],
+[class*="bg-\\[\\#05070B\\]"],
+[class*="bg-\\[\\#111622\\]"] {
+  background-color: rgba(255, 255, 255, 0.52) !important;
+}
+
+[class*="text-white"] { color: var(--brts-ink) !important; }
+[class*="text-gray-100"], [class*="text-gray-200"], [class*="text-gray-300"] { color: #38536a !important; }
+[class*="text-gray-400"], [class*="text-gray-500"] { color: var(--brts-muted) !important; }
+[class*="border-white"] { border-color: rgba(61, 107, 128, 0.14) !important; }
+[class*="divide-white"] > :not([hidden]) ~ :not([hidden]) { border-color: rgba(61, 107, 128, 0.12) !important; }
+
+/* Janmarg palette bridge for legacy utility classes used across the views. */
+[class*="text-cyan"], [class*="text-blue"], [class*="text-indigo"], [class*="text-purple"] { color: var(--brts-blue) !important; }
+[class*="border-cyan"], [class*="border-blue"], [class*="border-indigo"], [class*="border-purple"] { border-color: rgba(22, 59, 100, 0.28) !important; }
+[class*="bg-cyan"], [class*="bg-blue"], [class*="bg-indigo"], [class*="bg-purple"] { background-color: rgba(22, 59, 100, 0.09) !important; }
+[class*="text-amber"], [class*="text-yellow"] { color: var(--brts-saffron) !important; }
+[class*="border-amber"], [class*="border-yellow"] { border-color: rgba(232, 117, 24, 0.38) !important; }
+[class*="bg-amber"], [class*="bg-yellow"] { background-color: rgba(232, 117, 24, 0.12) !important; }
+[class*="from-red"], [class*="to-red"], [class*="from-rose"], [class*="to-rose"] { --tw-gradient-from: #e87518 !important; --tw-gradient-to: rgba(232, 117, 24, 0) !important; }
+[class*="text-red"], [class*="text-rose"] { color: #c95716 !important; }
+[class*="border-red"], [class*="border-rose"] { border-color: rgba(201, 87, 22, 0.35) !important; }
+[class*="bg-red"], [class*="bg-rose"] { background-color: rgba(201, 87, 22, 0.1) !important; }
+[class*="shadow-glow-cyan"], [class*="shadow-glow-purple"], [class*="shadow-glow-red"] { box-shadow: 0 10px 24px rgba(22, 59, 100, 0.16) !important; }
 
 /* Custom scrollbars */
 ::-webkit-scrollbar {
@@ -43,37 +82,37 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0A0D14;
+  background: #d7dde0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1E293B;
+  background: #8997a2;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00F2FE;
+  background: var(--brts-saffron);
 }
 
-/* Leaflet dark map overrides */
+/* Leaflet map frame */
 .leaflet-container {
-  background: #0A0D14 !important;
+  background: #d9dee1 !important;
   font-family: inherit;
   width: 100%;
   height: 100%;
 }
 
 .leaflet-popup-content-wrapper {
-  background: rgba(17, 22, 34, 0.95) !important;
-  color: #FFFFFF !important;
-  border: 1px solid rgba(0, 242, 254, 0.3) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  color: #12304a !important;
+  border: 1px solid rgba(232, 117, 24, 0.35) !important;
   border-radius: 1rem !important;
   backdrop-filter: blur(12px) !important;
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.8) !important;
+  box-shadow: 0 12px 24px rgba(28, 77, 99, 0.16) !important;
 }
 
 .leaflet-popup-tip {
-  background: rgba(17, 22, 34, 0.95) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
 }
 
 .leaflet-control-zoom {
@@ -83,14 +122,14 @@
 }
 
 .leaflet-control-zoom a {
-  background-color: rgba(17, 22, 34, 0.85) !important;
-  color: #00F2FE !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  color: var(--brts-blue) !important;
+  border-bottom: 1px solid rgba(61, 107, 128, 0.12) !important;
 }
 
 .leaflet-control-zoom a:hover {
-  background-color: #1E293B !important;
-  color: #FFFFFF !important;
+  background-color: #fff0e3 !important;
+  color: #12304a !important;
 }
 
 /* Pulse animation for overloaded bus marker */

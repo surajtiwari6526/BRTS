@@ -1,0 +1,19 @@
+Route_No,Route_Name,Start_Point,End_Point,Total_Stops,Key_Intermediate_Stops,Min_Fare_INR,Max_Fare_INR
+1,Ghuma Gam to Maninagar,Ghuma Gam,Maninagar,28,"Bopal Cross Road, ISKCON, Shivranjani, Nehrunagar, Anjali, Kankaria Lake",5,25
+2,Bhadaj Circle to Odhav Ring Road,Bhadaj Circle,Odhav Ring Road,32,"Science City Approach, Sola Cross Road, Gujarat High Court, Delhi Darwaja, Kalupur Railway Station",5,30
+3,RTO Circle to Maninagar,RTO Circle,Maninagar,22,"Ranip, Wadaj, Income Tax, LD College, Nehrunagar, Anjali, Kankaria",5,20
+4,LD College to Amba Township,LD College of Engineering,Amba Township (Trimandir),26,"University, Vijay Cross Road, Memnagar, Visat Cross Road, Chandkheda",5,25
+5,Vasna to Dahegam Circle,Vasna Terminus,Dahegam Circle (SP Ring Road),35,"Anjali, Narol, Isanpur, CTM Cross Road, Rabari Colony, Naroda Patia",5,30
+6,Narol to Naroda Gam,Narol,Naroda Gam,18,"Isanpur, Ghodasar, CTM, Rabari Colony, Soni Ni Chali, Thakkarbapanagar",5,20
+7,DCIS Circle to Narol,DCIS Circle (Zundal),Narol,30,"Chandkheda, RTO, Wadaj, Delhi Darwaja, Kalupur, Geeta Mandir, Chandranagar",5,25
+8,Naroda Gam to Bhadaj Circle,Naroda Gam,Bhadaj Circle,36,"Naroda Patia, Memco, Kalupur, Income Tax, Memnagar, Sola, Science City",5,30
+9,Vasantnagar Township to Maninagar,Vasantnagar Township (Gota),Maninagar,27,"Gota Cross Road, Sola Bridge, Memnagar, LD College, Geeta Mandir",5,25
+11,LD College to Odhav Ring Road,LD College of Engineering,Odhav Ring Road,24,"Shivranjani, Anjali, CTM Cross Road, Express Highway Junction, Odhav",5,25
+12,RTO Circle to CTM Cross Roads,RTO Circle,CTM Cross Roads,19,"Ranip, Subhash Bridge, Delhi Darwaja, Kalupur, Raipur, Hatkeshwar",5,20
+14,Sarkhej Sanand Cross Road to Naroda,Sarkhej Sanand Cross Road,Naroda Gam,31,"Ujala Circle, ISKCON, Shivranjani, Anjali, Kalupur, Naroda Patia",5,30
+15,Iskcon to Airport,ISKCON Cross Road,Ahmedabad Domestic Airport,23,"Shivranjani, Memnagar, Sola, RTO Circle, Camp Hanuman",5,25
+16,Nehru Nagar to Sarkhej Sanand Road,Nehru Nagar,Sarkhej Sanand Cross Road,12,"Shivranjani, ISKCON, SG Highway, Sanand Circle",5,15
+17,Nehru Nagar to South Bopal,Nehru Nagar,South Bopal,14,"Shivranjani, ISKCON, Bopal Flyover, South Bopal",5,15
+18,Maninagar to Airport,Maninagar,Ahmedabad Domestic Airport,16,"Kankaria, Geeta Mandir, Kalupur, Camp Hanuman",5,20
+101,RTO Circular (Clockwise),RTO Circle,RTO Circle (Circular),45,"RTO -> Wadaj -> Income Tax -> Kalupur -> Geeta Mandir -> Anjali -> Shivranjani -> Memnagar -> RTO",5,35
+201,RTO Circular (Anticlockwise),RTO Circle,RTO Circle (Circular),45,"RTO -> Memnagar -> Shivranjani -> Anjali -> Geeta Mandir -> Kalupur -> Income Tax -> Wadaj -> RTO",5,35

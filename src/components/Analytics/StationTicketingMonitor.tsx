@@ -54,7 +54,7 @@ export const StationTicketingMonitor: React.FC = () => {
   const r9Pct = totalTicketsSold ? Math.round((r9Tickets / totalTicketsSold) * 100) : 65;
 
   return (
-    <div className="glass-card rounded-3xl p-6 border border-cyan-500/20 bg-gradient-to-b from-[#0F1420] to-[#0A0D14] space-y-6">
+    <div className="glass-card rounded-3xl p-6 border border-slate-300 bg-slate-50/45 space-y-6">
       
       {/* Header Title */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
@@ -74,7 +74,7 @@ export const StationTicketingMonitor: React.FC = () => {
         </div>
 
         {/* Station Filter Tabs */}
-        <div className="flex items-center space-x-1 bg-black/40 p-1 rounded-xl border border-white/10 text-xs font-mono">
+        <div className="flex items-center space-x-1 bg-white/70 p-1 rounded-xl border border-slate-200 text-xs font-mono">
           <button
             onClick={() => setFilter('ALL')}
             className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
@@ -106,7 +106,7 @@ export const StationTicketingMonitor: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* KPI 1: Total Tickets */}
-        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+          <div className="p-4 rounded-2xl bg-white/5 border border-slate-300 bg-slate-50/45 space-y-1">
           <div className="flex items-center justify-between text-xs font-mono text-gray-400">
             <span>TOTAL TICKETS SOLD (1HR)</span>
             <Ticket className="h-4 w-4 text-cyan-400" />
@@ -121,7 +121,7 @@ export const StationTicketingMonitor: React.FC = () => {
         </div>
 
         {/* KPI 2: Total Revenue */}
-        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-1">
+          <div className="p-4 rounded-2xl bg-white/5 border border-slate-200 space-y-1">
           <div className="flex items-center justify-between text-xs font-mono text-gray-400">
             <span>AFCS FARE REVENUE</span>
             <DollarSign className="h-4 w-4 text-emerald-400" />
@@ -165,7 +165,7 @@ export const StationTicketingMonitor: React.FC = () => {
       </div>
 
       {/* Visual Route Ticket Demand Balance Bar */}
-      <div className="p-4 rounded-2xl bg-black/40 border border-white/10 space-y-2">
+      <div className="p-4 rounded-2xl bg-white/65 border border-slate-200 space-y-2">
         <div className="flex justify-between text-xs font-mono">
           <span className="text-red-400 font-bold flex items-center space-x-1.5">
             <span>Route 9 (RTO ➔ LD College): {r9Tickets} Tickets ({r9Pct}%)</span>
@@ -187,7 +187,7 @@ export const StationTicketingMonitor: React.FC = () => {
         </div>
 
         <p className="text-[10px] text-gray-400 font-mono text-center">
-          ⚡ AI Dispatch Recommendation: Dynamic diversion from Corridor 12 to Corridor 9 will absorb {Math.round(r9Tickets * 0.35)} tickets/hr surge.
+                  Dispatch Recommendation: Dynamic diversion from Corridor 12 to Corridor 9 will absorb {Math.round(r9Tickets * 0.35)} tickets/hr surge.
         </p>
       </div>
 
@@ -229,7 +229,7 @@ export const StationTicketingMonitor: React.FC = () => {
               </div>
 
               {/* Ticketing Stats */}
-              <div className="grid grid-cols-2 gap-2 text-xs font-mono bg-black/40 p-2.5 rounded-xl border border-white/5">
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono bg-white/65 p-2.5 rounded-xl border border-slate-200">
                 <div>
                   <span className="text-gray-400 block text-[9px]">TICKETS SOLD (1HR)</span>
                   <span className="text-cyan-300 font-black text-sm">{stop.ticketsSoldLastHour || 120}</span>

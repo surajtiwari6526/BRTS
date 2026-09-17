@@ -1,7 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSimulation } from '../../context/SimulationContext';
+import { RouteReferencePanel } from '../../components/Routes/RouteReferencePanel';
+import { TransitImpactPanel } from '../../components/Analytics/TransitImpactPanel';
+import { BRTS_ROUTES } from '../../data/routeCatalog';
 import { 
   BarChart3, 
   TrendingUp, 
@@ -10,7 +13,14 @@ import {
   Layers, 
   Flame, 
   Zap, 
-  PieChart as PieChartIcon 
+  PieChart as PieChartIcon,
+  Download,
+  Search,
+  Bus as BusIcon,
+  ArrowUpDown,
+  Gauge,
+  Users,
+  ArrowRightLeft
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -27,6 +37,56 @@ import {
 
 export default function AnalyticsPage() {
   const { buses, dprMetrics } = useSimulation();
+  const [fleetQuery, setFleetQuery] = useState('');
+  const [fleetRoute, setFleetRoute] = useState('ALL');
+  const [fleetStatus, setFleetStatus] = useState('ALL');
+  const [sortBy, setSortBy] = useState<'load' | 'speed' | 'route'>('load');
+
+  const fleetRows = useMemo(() => buses
+    .filter((bus) => {
+      const query = fleetQuery.toLowerCase();
+      const matchesQuery = !query || `${bus.id} ${bus.busNumber} ${bus.currentStop} ${bus.routeName}`.toLowerCase().includes(query);
+      const matchesRoute = fleetRoute === 'ALL' || bus.routeId === fleetRoute;
+      const matchesStatus = fleetStatus === 'ALL' || bus.status === fleetStatus;
+      return matchesQuery && matchesRoute && matchesStatus;
+    })
+    .sort((a, b) => sortBy === 'speed' ? b.speedKmph - a.speedKmph : sortBy === 'route' ? a.routeId.localeCompare(b.routeId) : b.plfPercent - a.plfPercent), [buses, fleetQuery, fleetRoute, fleetStatus, sortBy]);
+
+  const fleetAverageLoad = buses.length ? Math.round(buses.reduce((sum, bus) => sum + bus.plfPercent, 0) / buses.length) : 0;
+  const fleetVacantSeats = buses.reduce((sum, bus) => sum + Math.max(0, bus.capacity - bus.currentPassengers), 0);
+  const fleetOverloaded = buses.filter((bus) => bus.plfPercent > 100).length;
+  const fleetDiverted = buses.filter((bus) => bus.isDiverted).length;
+  const routeFleetRows = BRTS_ROUTES.map((route) => {
+    const routeBuses = buses.filter((bus) => bus.routeId === `ROUTE_${route.routeNo}`);
+    const passengers = routeBuses.reduce((sum, bus) => sum + bus.currentPassengers, 0);
+    const averagePlf = routeBuses.length ? Math.round(routeBuses.reduce((sum, bus) => sum + bus.plfPercent, 0) / routeBuses.length) : 0;
+    return {
+      ...route,
+      busCount: routeBuses.length,
+      passengers,
+      averagePlf,
+      overloaded: routeBuses.filter((bus) => bus.plfPercent > 100).length,
+      vacantSeats: routeBuses.reduce((sum, bus) => sum + Math.max(0, bus.capacity - bus.currentPassengers), 0),
+      diverted: routeBuses.filter((bus) => bus.isDiverted).length
+    };
+  });
+  const fleetMetrics: Array<{ label: string; value: string; icon: React.ComponentType<{ className?: string }> }> = [
+    { label: 'Fleet average load', value: `${fleetAverageLoad}%`, icon: Gauge },
+    { label: 'Vacant seats', value: String(fleetVacantSeats), icon: Users },
+    { label: 'Over capacity', value: String(fleetOverloaded), icon: Flame },
+    { label: 'Active diversions', value: String(fleetDiverted), icon: ArrowRightLeft }
+  ];
+
+  const exportFleetCsv = () => {
+    const header = ['Bus ID', 'Registration', 'Route', 'Current stop', 'Passengers', 'Capacity', 'PLF %', 'Status', 'Speed km/h', 'Diverted'];
+    const rows = buses.map((bus) => [bus.id, bus.busNumber, bus.routeId, bus.currentStop, bus.currentPassengers, bus.capacity, bus.plfPercent, bus.status, bus.speedKmph, bus.isDiverted ? 'Yes' : 'No']);
+    const csv = [header, ...rows].map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    link.download = 'brts-live-fleet.csv';
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
 
   // Hourly Passenger Load Curves Data
   const hourlyData = [
@@ -71,7 +131,7 @@ export default function AnalyticsPage() {
   ];
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-[#0A0D14] p-4 lg:p-8 space-y-6 overflow-y-auto">
+    <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-transparent p-4 lg:p-8 space-y-6 overflow-y-auto">
       
       {/* Title Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-card rounded-2xl p-6 border border-white/10">
@@ -98,6 +158,62 @@ export default function AnalyticsPage() {
           </div>
         </div>
       </div>
+
+      <RouteReferencePanel compact />
+      <TransitImpactPanel compact />
+
+      {/* Live fleet intelligence */}
+      <section className="glass-card rounded-2xl border border-slate-300 p-5 space-y-5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="flex items-start gap-3">
+            <div className="rounded-xl bg-[#163b64]/10 p-2.5 text-[#163b64] border border-[#163b64]/20"><BusIcon className="h-5 w-5" /></div>
+            <div>
+              <h2 className="text-base font-bold text-slate-900">LIVE FLEET INTELLIGENCE</h2>
+              <p className="text-xs text-slate-500">Every vehicle, current location, load state, and dispatch assignment.</p>
+            </div>
+          </div>
+          <button onClick={exportFleetCsv} className="flex items-center justify-center gap-2 rounded-xl border border-orange-300 bg-orange-50 px-3 py-2 text-xs font-bold text-orange-800 hover:bg-orange-100"><Download className="h-3.5 w-3.5" /> Export fleet CSV</button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          {fleetMetrics.map(({ label, value, icon: MetricIcon }) => {
+            return <div key={label} className="rounded-xl border border-slate-200 bg-white/65 p-3"><div className="flex items-center justify-between text-[10px] font-mono uppercase text-slate-500"><span>{label}</span><MetricIcon className="h-3.5 w-3.5 text-[#e87518]" /></div><strong className="mt-1 block text-xl font-mono text-[#163b64]">{value}</strong></div>;
+          })}
+        </div>
+
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-[1.5fr_1fr_1fr_auto]">
+          <label className="relative"><Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" /><input value={fleetQuery} onChange={(event) => setFleetQuery(event.target.value)} placeholder="Search bus, registration, stop..." className="w-full rounded-xl border border-slate-200 bg-white/80 py-2 pl-9 pr-3 text-xs text-slate-800 outline-none focus:border-orange-400" /></label>
+          <select value={fleetRoute} onChange={(event) => setFleetRoute(event.target.value)} className="rounded-xl border border-slate-200 bg-white/80 px-3 py-2 text-xs text-slate-700"><option value="ALL">All routes</option>{BRTS_ROUTES.map((route) => <option key={route.routeNo} value={`ROUTE_${route.routeNo}`}>Route {route.routeNo} · {route.routeName}</option>)}</select>
+          <select value={fleetStatus} onChange={(event) => setFleetStatus(event.target.value)} className="rounded-xl border border-slate-200 bg-white/80 px-3 py-2 text-xs text-slate-700"><option value="ALL">All statuses</option><option value="CRITICAL_OVERLOAD">Critical overload</option><option value="OVERLOAD">Overload</option><option value="NEAR_CAPACITY">Near capacity</option><option value="LOW_RUSH">Low rush</option><option value="UNDERUTILIZED">Underutilized</option></select>
+          <button onClick={() => setSortBy(sortBy === 'load' ? 'speed' : sortBy === 'speed' ? 'route' : 'load')} className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white/80 px-3 py-2 text-xs font-bold text-slate-700"><ArrowUpDown className="h-3.5 w-3.5" /> Sort: {sortBy}</button>
+        </div>
+
+        <div className="overflow-x-auto rounded-xl border border-slate-200">
+          <table className="w-full min-w-[900px] text-left text-xs">
+            <thead className="bg-slate-100/80 text-[10px] uppercase tracking-wider text-slate-500"><tr><th className="px-3 py-2">Bus</th><th className="px-3 py-2">Route</th><th className="px-3 py-2">Current stop</th><th className="px-3 py-2">Passengers</th><th className="px-3 py-2">PLF</th><th className="px-3 py-2">Speed</th><th className="px-3 py-2">Status</th><th className="px-3 py-2">Assignment</th></tr></thead>
+            <tbody className="divide-y divide-slate-100 bg-white/55">{fleetRows.map((bus) => <tr key={bus.id} className="hover:bg-orange-50/60"><td className="px-3 py-3"><strong className="font-mono text-[#163b64]">{bus.id}</strong><span className="block text-[10px] text-slate-500">{bus.busNumber}</span></td><td className="px-3 py-3 font-mono font-bold text-slate-700">{bus.routeId}</td><td className="px-3 py-3 text-slate-700">{bus.currentStop}</td><td className="px-3 py-3 font-mono">{bus.currentPassengers} / {bus.capacity}</td><td className="px-3 py-3"><span className={`font-mono font-bold ${bus.plfPercent > 100 ? 'text-orange-700' : bus.plfPercent < 35 ? 'text-emerald-700' : 'text-[#163b64]'}`}>{bus.plfPercent}%</span><div className="mt-1 h-1 w-20 rounded-full bg-slate-200"><div className="h-full rounded-full bg-[#e87518]" style={{ width: `${Math.min(100, bus.plfPercent)}%` }} /></div></td><td className="px-3 py-3 font-mono text-slate-700">{bus.speedKmph} km/h</td><td className="px-3 py-3"><span className="rounded-full border border-slate-200 bg-slate-100 px-2 py-1 text-[10px] font-bold text-slate-700">{bus.status.replace('_', ' ')}</span></td><td className="px-3 py-3 text-[10px] font-semibold text-slate-600">{bus.isDiverted ? `Diverted to ${bus.divertedTo}` : 'Scheduled route'}</td></tr>)}</tbody>
+          </table>
+          {fleetRows.length === 0 && <div className="p-6 text-center text-xs text-slate-500">No buses match the selected filters.</div>}
+        </div>
+        <p className="text-[10px] font-mono text-slate-500">Showing {fleetRows.length} of {buses.length} live vehicles. Data refreshes with the simulation telemetry loop.</p>
+      </section>
+
+      {/* Complete network route fleet overview */}
+      <section className="glass-card rounded-2xl border border-slate-300 p-5 space-y-4">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-base font-bold text-slate-900">COMPLETE NETWORK FLEET COVERAGE</h2>
+            <p className="text-xs text-slate-500">Live allocation across every route in the supplied Ahmedabad BRTS schedule.</p>
+          </div>
+          <span className="rounded-full border border-orange-200 bg-orange-50 px-2.5 py-1 text-[10px] font-mono font-bold text-orange-800">{routeFleetRows.filter((route) => route.busCount > 0).length}/{routeFleetRows.length} routes active</span>
+        </div>
+        <div className="overflow-x-auto rounded-xl border border-slate-200">
+          <table className="w-full min-w-[900px] text-left text-xs">
+            <thead className="bg-slate-100/80 text-[10px] uppercase tracking-wider text-slate-500"><tr><th className="px-3 py-2">Route</th><th className="px-3 py-2">Published corridor</th><th className="px-3 py-2">Buses</th><th className="px-3 py-2">Passengers</th><th className="px-3 py-2">Avg PLF</th><th className="px-3 py-2">Vacant seats</th><th className="px-3 py-2">Overload</th><th className="px-3 py-2">Diverted</th></tr></thead>
+            <tbody className="divide-y divide-slate-100 bg-white/55">{routeFleetRows.map((route) => <tr key={route.routeNo} className="hover:bg-orange-50/60"><td className="px-3 py-2.5 font-mono font-bold text-[#163b64]">{route.routeNo}</td><td className="px-3 py-2.5 text-slate-700">{route.routeName}<span className="block text-[10px] text-slate-500">{route.totalStops} stops · Rs {route.minFareInr}-{route.maxFareInr}</span></td><td className="px-3 py-2.5 font-mono font-bold">{route.busCount}</td><td className="px-3 py-2.5 font-mono">{route.passengers}</td><td className={`px-3 py-2.5 font-mono font-bold ${route.averagePlf > 100 ? 'text-orange-700' : route.averagePlf < 35 ? 'text-emerald-700' : 'text-[#163b64]'}`}>{route.averagePlf}%</td><td className="px-3 py-2.5 font-mono">{route.vacantSeats}</td><td className="px-3 py-2.5 font-mono text-orange-700">{route.overloaded}</td><td className="px-3 py-2.5 font-mono text-emerald-700">{route.diverted}</td></tr>)}</tbody>
+          </table>
+        </div>
+      </section>
 
       {/* Top 2 Recharts Panels */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

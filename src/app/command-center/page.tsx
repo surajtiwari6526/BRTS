@@ -5,6 +5,9 @@ import dynamic from 'next/dynamic';
 import { useSimulation } from '../../context/SimulationContext';
 import { StationTicketingMonitor } from '../../components/Analytics/StationTicketingMonitor';
 import { FleetOptimizationMonitor } from '../../components/Analytics/FleetOptimizationMonitor';
+import { RouteReferencePanel } from '../../components/Routes/RouteReferencePanel';
+import { TransitImpactPanel } from '../../components/Analytics/TransitImpactPanel';
+import { ScenarioLab } from '../../components/Analytics/ScenarioLab';
 
 const BusMap = dynamic(() => import('../../components/Map/BusMap').then((mod) => mod.BusMap), {
   ssr: false,
@@ -18,12 +21,12 @@ const BusMap = dynamic(() => import('../../components/Map/BusMap').then((mod) =>
   )
 });
 import { 
+  Activity,
   Bus as BusIcon, 
   AlertTriangle, 
   ArrowRightLeft, 
   Users, 
   Gauge, 
-  Zap, 
   Filter, 
   Search, 
   CheckCircle2,
@@ -69,7 +72,7 @@ export default function CommandCenterPage() {
   const selectedBus = buses.find(b => b.id === selectedBusId);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] bg-[#0A0D14] p-4 lg:p-6 space-y-4 overflow-hidden">
+    <div className="flex min-h-[calc(100vh-4rem)] flex-col bg-transparent p-4 lg:p-6 space-y-4 overflow-y-auto overflow-x-hidden">
       
       {/* KPI Top Banner */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3 shrink-0">
@@ -124,7 +127,7 @@ export default function CommandCenterPage() {
             <TrendingUp className="h-5 w-5" />
           </div>
           <div>
-            <div className="text-[10px] text-gray-400 font-mono">AI DPR RECOMMENDATION</div>
+            <div className="text-[10px] text-gray-400 font-mono">DPR RECOMMENDATION</div>
             <div className="text-xs font-bold font-mono text-cyan-300">
               {dprMetrics.isRecommended ? `DPR ${dprMetrics.dprRatio}x (+₹${dprMetrics.netBenefitRupees}/h)` : 'STANDBY'}
             </div>
@@ -133,8 +136,12 @@ export default function CommandCenterPage() {
 
       </div>
 
+      <RouteReferencePanel compact />
+      <TransitImpactPanel compact />
+      <ScenarioLab />
+
       {/* Main Viewport Container */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 h-[540px]">
+      <div className="grid min-h-[540px] grid-cols-1 lg:grid-cols-12 gap-4 h-[min(540px,70vh)] lg:h-[540px] shrink-0">
         
         {/* Full-Screen Map Viewport */}
         <div className="lg:col-span-8 h-full relative overflow-hidden rounded-2xl">
@@ -150,10 +157,10 @@ export default function CommandCenterPage() {
         <div className="lg:col-span-4 flex flex-col h-full glass-card rounded-2xl border border-white/10 overflow-hidden">
           
           {/* Header & Controls */}
-          <div className="p-3 border-b border-white/10 space-y-2.5 shrink-0 bg-[#111622]/60">
+            <div className="p-3 border-b border-slate-200/80 space-y-2.5 shrink-0 bg-white/45">
             <div className="flex items-center justify-between">
               <span className="font-mono text-xs font-bold text-white tracking-wider flex items-center space-x-1.5">
-                <Zap className="h-4 w-4 text-[#00F2FE]" />
+                <Activity className="h-4 w-4 text-[#00F2FE]" />
                 <span>REAL-TIME FLEET TELEMETRY</span>
               </span>
               <span className="text-[10px] font-mono text-gray-400 bg-white/5 px-2 py-0.5 rounded-full border border-white/10">
@@ -169,7 +176,7 @@ export default function CommandCenterPage() {
                 placeholder="Search bus ID, number, stop..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-xl bg-[#0A0D14] pl-8 pr-3 py-1.5 text-xs text-white placeholder-gray-500 border border-white/10 focus:border-[#00F2FE] focus:outline-none font-mono"
+                className="w-full rounded-xl bg-white/75 pl-8 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 border border-slate-200 focus:border-cyan-400 focus:outline-none font-mono"
               />
             </div>
 
@@ -204,8 +211,8 @@ export default function CommandCenterPage() {
                   onClick={() => setSelectedBusId(bus.id)}
                   className={`glass-card-hover rounded-xl p-3 border transition-all cursor-pointer space-y-2 ${
                     isSelected
-                      ? 'border-[#00F2FE] bg-[#1E293B]/80 shadow-glow-cyan'
-                      : 'border-white/5 bg-[#111622]/40'
+                      ? 'border-cyan-400 bg-cyan-50/80 shadow-lg shadow-cyan-900/10'
+                      : 'border-slate-200/70 bg-white/45'
                   }`}
                 >
                   {/* Card Title Row */}
@@ -281,7 +288,7 @@ export default function CommandCenterPage() {
 
       </div>
 
-      {/* AI Fleet Sizing & Low-Rush Bus Optimization Engine */}
+      {/* Fleet sizing and low-rush bus optimization */}
       <FleetOptimizationMonitor />
 
       {/* AFCS Real-Time Ticketing & Station Rush Monitor */}

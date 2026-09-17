@@ -1,4 +1,6 @@
 import { Bus, BRTSStop } from '../types/brts';
+import { BRTS_ROUTES } from './routeCatalog';
+import { getRoutePath } from './routePaths';
 
 export const INITIAL_BUSES: Bus[] = [
   {
@@ -164,6 +166,49 @@ export const INITIAL_BUSES: Bus[] = [
     "divertedTo": "ROUTE_9_EXPRESS"
   }
 ];
+
+// Keep a small, deterministic operating fleet on every published route so
+// route analytics and dispatch can exercise the complete network.
+const GENERATED_ROUTE_BUSES: Bus[] = BRTS_ROUTES
+  .filter((route) => !INITIAL_BUSES.some((bus) => bus.routeId === `ROUTE_${route.routeNo}`))
+  .flatMap((route, routeIndex) => [0, 1].map((vehicleIndex) => {
+    const passengers = 24 + ((routeIndex * 11 + vehicleIndex * 13) % 42);
+    const capacity = 70;
+    const plfPercent = parseFloat(((passengers / capacity) * 100).toFixed(1));
+    const status = plfPercent >= 85 ? 'NEAR_CAPACITY' : plfPercent < 30 ? 'UNDERUTILIZED' : 'LOW_RUSH';
+    const path = getRoutePath(`ROUTE_${route.routeNo}`);
+    const position = path[Math.min(vehicleIndex * Math.max(1, Math.floor(path.length / 2)), path.length - 1)];
+    const nextPosition = path[Math.min(vehicleIndex + 1, path.length - 1)];
+    return {
+      id: `BUS-${String(2000 + routeIndex * 10 + vehicleIndex).padStart(4, '0')}`,
+      busNumber: `GJ-01-R${String(routeIndex + 1).padStart(2, '0')}-${String(vehicleIndex + 1).padStart(4, '0')}`,
+      routeId: `ROUTE_${route.routeNo}`,
+      routeName: route.routeName,
+      currentStop: vehicleIndex === 0 ? route.startPoint : route.intermediateStops[0] || route.endPoint,
+      lat: position[0],
+      lng: position[1],
+      heading: Math.round((Math.atan2(nextPosition[1] - position[1], nextPosition[0] - position[0]) * 180) / Math.PI),
+      speedKmph: 22 + ((routeIndex * 5 + vehicleIndex * 7) % 18),
+      capacity,
+      currentPassengers: passengers,
+      plfPercent,
+      status,
+      isDiverted: false
+      ,pathIndex: Math.min(vehicleIndex * Math.max(1, Math.floor(path.length / 2)), path.length - 1)
+    } satisfies Bus;
+  }));
+
+INITIAL_BUSES.push(...GENERATED_ROUTE_BUSES);
+
+// Keep the seeded demo fleet on the same geometry rendered by the map.
+INITIAL_BUSES.forEach((bus, index) => {
+  const path = getRoutePath(bus.isDiverted ? 'ROUTE_9_EXPRESS' : bus.routeId);
+  const pathIndex = bus.pathIndex ?? index % path.length;
+  const position = path[pathIndex % path.length];
+  bus.lat = position[0];
+  bus.lng = position[1];
+  bus.pathIndex = pathIndex % path.length;
+});
 
 export const AHMEDABAD_STOPS: BRTSStop[] = [
   { id: 'STOP-01', name: 'RTO Circle', lat: 23.0664, lng: 72.5642, routeId: 'SHARED', ticketsSoldLastHour: 540, waitingPassengers: 145, rushLevel: 'CRITICAL_SURGE' },

@@ -16,7 +16,7 @@ interface BusMapProps {
 const LeafletMapWrapper = dynamic(() => import('./LeafletMapWrapper'), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full w-full items-center justify-center bg-[#0A0D14] text-cyan-400 font-mono text-sm rounded-2xl border border-white/10">
+    <div className="flex h-full w-full items-center justify-center rounded-2xl border border-slate-300 bg-slate-100/90 font-mono text-sm text-[#163b64]">
       <div className="flex items-center space-x-3">
         <div className="h-5 w-5 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
         <span>INITIALIZING JANMARG BRTS MAP ENGINE...</span>

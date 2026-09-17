@@ -17,9 +17,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'BRTS-Pulse | AI Dynamic Route Optimization & Autonomous Transit System',
-  description: 'Smart India Hackathon Mission-Control Cyber-Transit System for Ahmedabad Janmarg BRTS. Dynamic load balancing, DPR algorithm, driver HUD, & commuter trip planner.',
-  keywords: ['BRTS', 'Transit Optimization', 'Ahmedabad Janmarg', 'AI Dispatch', 'Smart Transit', 'SIH 2026', 'Fleet Management'],
+  title: 'BRTS-Pulse | Ahmedabad Janmarg Transit Operations',
+  description: 'Transit operations system for Ahmedabad Janmarg BRTS with dynamic load balancing, route planning, driver tools, and commuter information.',
+  keywords: ['BRTS', 'Transit Operations', 'Ahmedabad Janmarg', 'Route Planning', 'Fleet Management'],
   authors: [{ name: 'Antigravity Engineering Team' }],
   viewport: 'width=device-width, initial-scale=1.0',
 };
@@ -31,11 +31,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="min-h-screen bg-[#0A0D14] text-gray-100 font-sans antialiased selection:bg-[#00F2FE] selection:text-black">
+      <body className="min-h-screen text-slate-900 font-sans antialiased selection:bg-cyan-200 selection:text-slate-900">
         <SimulationProvider>
           <div className="relative flex flex-col min-h-screen">
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main className="min-w-0 flex-1">{children}</main>
           </div>
         </SimulationProvider>
       </body>

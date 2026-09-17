@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useSimulation } from '../../context/SimulationContext';
+import { RouteReferencePanel } from '../../components/Routes/RouteReferencePanel';
 import { 
   ShieldAlert, 
   Gauge, 
@@ -35,7 +36,7 @@ export default function DriverHudPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-[#05070B] p-4 lg:p-8 space-y-6 select-none">
+    <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-transparent p-4 lg:p-8 space-y-6 select-none">
       
       {/* HUD Top Status Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-card rounded-2xl p-4 border border-white/10">
@@ -54,7 +55,7 @@ export default function DriverHudPage() {
                   setSelectedDriverBusId(e.target.value);
                   setShowRerouteModal(true);
                 }}
-                className="bg-[#0A0D14] text-cyan-300 font-mono font-bold text-sm rounded-lg px-2 py-1 border border-white/20 outline-none"
+                className="bg-white/80 text-[#163b64] font-mono font-bold text-sm rounded-lg px-2 py-1 border border-slate-200 outline-none"
               >
                 {buses.map(b => (
                   <option key={b.id} value={b.id}>{b.id} ({b.busNumber})</option>
@@ -89,17 +90,19 @@ export default function DriverHudPage() {
 
       </div>
 
+      <RouteReferencePanel compact />
+
       {/* Driver HUD High-Visibility Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 flex-1">
         
         {/* Speedometer Gauge Card */}
-        <div className="glass-card rounded-3xl p-6 border border-cyan-500/30 flex flex-col items-center justify-center space-y-3 bg-gradient-to-b from-[#111622] to-[#0A0D14]">
+        <div className="glass-card rounded-3xl p-6 border border-slate-300 flex flex-col items-center justify-center space-y-3 bg-white/45">
           <span className="text-xs font-mono text-gray-400 tracking-wider font-bold uppercase flex items-center space-x-1.5">
             <Gauge className="h-4 w-4 text-cyan-400" />
             <span>TELEMETRY SPEEDOMETER</span>
           </span>
 
-          <div className="relative flex items-center justify-center h-44 w-44 rounded-full border-4 border-cyan-400/30 bg-[#0A0D14] shadow-glow-cyan">
+          <div className="relative flex items-center justify-center h-44 w-44 rounded-full border-4 border-[#163b64]/30 bg-slate-100/80 shadow-lg">
             <div className="text-center space-y-0">
               <span className="text-5xl font-black font-mono text-white block tracking-tighter">
                 {currentBus.speedKmph}
@@ -114,7 +117,7 @@ export default function DriverHudPage() {
         </div>
 
         {/* Capacity & PLF Meter Card */}
-        <div className="glass-card rounded-3xl p-6 border border-purple-500/30 flex flex-col justify-between space-y-4 bg-gradient-to-b from-[#111622] to-[#0A0D14]">
+        <div className="glass-card rounded-3xl p-6 border border-slate-300 flex flex-col justify-between space-y-4 bg-white/45">
           <div className="flex items-center justify-between border-b border-white/10 pb-2">
             <span className="text-xs font-mono text-gray-400 tracking-wider font-bold uppercase flex items-center space-x-1.5">
               <Users className="h-4 w-4 text-purple-400" />
@@ -159,7 +162,7 @@ export default function DriverHudPage() {
         </div>
 
         {/* Next Stop Navigation Card */}
-        <div className="glass-card rounded-3xl p-6 border border-emerald-500/30 flex flex-col justify-between space-y-4 bg-gradient-to-b from-[#111622] to-[#0A0D14]">
+        <div className="glass-card rounded-3xl p-6 border border-emerald-300/60 flex flex-col justify-between space-y-4 bg-emerald-50/45">
           <div className="flex items-center justify-between border-b border-white/10 pb-2">
             <span className="text-xs font-mono text-gray-400 tracking-wider font-bold uppercase flex items-center space-x-1.5">
               <Navigation className="h-4 w-4 text-emerald-400" />
@@ -202,7 +205,7 @@ export default function DriverHudPage() {
                     EMERGENCY REROUTE DISPATCH ALERT
                   </h2>
                   <p className="text-xs text-amber-300 font-mono">
-                    AI Traffic Operations Center Dynamic Directive
+                    Traffic Operations Center Dynamic Directive
                   </p>
                 </div>
               </div>
