@@ -9,19 +9,35 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        brts: {
+          navy: '#0F172A',
+          navyDark: '#020617',
+          navyLight: '#1E293B',
+          navyMuted: '#334155',
+          saffron: '#EA580C',
+          saffronLight: '#F97316',
+          amber: '#D97706',
+          silver: '#F8FAFC',
+          silverCard: '#FFFFFF',
+          silverBorder: '#E2E8F0',
+          silverMuted: '#94A3B8',
+          green: '#16A34A',
+          red: '#DC2626'
+        },
         obsidian: {
-          DEFAULT: '#0A0D14',
-          card: 'rgba(22, 28, 45, 0.75)',
-          border: 'rgba(255, 255, 255, 0.08)',
-          elevation: '#111622'
+          DEFAULT: '#F8FAFC',
+          card: '#FFFFFF',
+          border: '#E2E8F0',
+          elevation: '#F1F5F9'
         },
         transit: {
-          cyan: '#00F2FE',
-          cyanBrand: '#4FACFE',
-          rushRed: '#FF3366',
-          flowGreen: '#00E676',
-          amberPulse: '#FFB300',
-          violet: '#7C4DFF'
+          navy: '#0F172A',
+          saffron: '#EA580C',
+          saffronAccent: '#F97316',
+          rushRed: '#DC2626',
+          flowGreen: '#16A34A',
+          amberPulse: '#D97706',
+          silver: '#94A3B8'
         }
       },
       fontFamily: {
@@ -29,10 +45,15 @@ const config: Config = {
         mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace'],
       },
       boxShadow: {
-        'glow-cyan': '0 0 16px rgba(0, 242, 254, 0.35)',
-        'glow-red': '0 0 16px rgba(255, 51, 102, 0.35)',
-        'glow-green': '0 0 16px rgba(0, 230, 118, 0.35)',
-        'glow-amber': '0 0 16px rgba(255, 179, 0, 0.35)'
+        'brts-card': '0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04)',
+        'brts-saffron': '0 4px 14px rgba(234, 88, 12, 0.22)',
+        'brts-navy': '0 4px 14px rgba(15, 23, 42, 0.15)',
+        'glow-saffron': '0 0 16px rgba(234, 88, 12, 0.3)',
+        'glow-navy': '0 0 16px rgba(15, 23, 42, 0.2)',
+        'glow-green': '0 0 16px rgba(22, 163, 74, 0.3)',
+        'glow-amber': '0 0 16px rgba(217, 119, 6, 0.3)',
+        'glow-cyan': '0 0 16px rgba(2, 132, 199, 0.25)',
+        'glow-red': '0 0 16px rgba(220, 38, 38, 0.25)'
       },
       animation: {
         'ping-slow': 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
@@ -41,7 +62,7 @@ const config: Config = {
       keyframes: {
         pulseGlow: {
           '0%, 100%': { opacity: '1', transform: 'scale(1)' },
-          '50%': { opacity: '0.6', transform: 'scale(1.05)' }
+          '50%': { opacity: '0.8', transform: 'scale(1.02)' }
         }
       }
     },

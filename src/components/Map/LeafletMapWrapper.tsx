@@ -16,11 +16,11 @@ interface LeafletMapWrapperProps {
 }
 
 const routeLineColors: Record<string, string> = {
-  ROUTE_1: '#163b64', ROUTE_2: '#2f8f5b', ROUTE_3: '#e87518', ROUTE_4: '#8b5e34',
-  ROUTE_5: '#a33f2b', ROUTE_6: '#5b7185', ROUTE_7: '#176b87', ROUTE_8: '#96711f',
-  ROUTE_9: '#c95716', ROUTE_11: '#6d4c8d', ROUTE_12: '#2f8f5b', ROUTE_14: '#b85c38',
-  ROUTE_15: '#2d6b8f', ROUTE_16: '#98752d', ROUTE_17: '#4d8064', ROUTE_18: '#7a536f',
-  ROUTE_101: '#163b64', ROUTE_201: '#e87518'
+  ROUTE_1: '#0F172A', ROUTE_2: '#16A34A', ROUTE_3: '#EA580C', ROUTE_4: '#854D0E',
+  ROUTE_5: '#991B1B', ROUTE_6: '#475569', ROUTE_7: '#0284C7', ROUTE_8: '#B45309',
+  ROUTE_9: '#DC2626', ROUTE_11: '#7E22CE', ROUTE_12: '#16A34A', ROUTE_14: '#C2410C',
+  ROUTE_15: '#0369A1', ROUTE_16: '#A16207', ROUTE_17: '#15803D', ROUTE_18: '#BE185D',
+  ROUTE_101: '#0F172A', ROUTE_201: '#EA580C'
 };
 
 // Sub-component to smoothly fly map to new center/zoom
@@ -36,22 +36,18 @@ const createBusIcon = (bus: Bus, isSelected: boolean) => {
   const isOverloaded = bus.status === 'CRITICAL_OVERLOAD' || bus.status === 'OVERLOAD';
   const isDiverted = bus.isDiverted;
 
-  let borderColor = '#163b64';
-  let fillColor = '#f7f8f8';
-  let badgeColor = 'bg-cyan-500';
+  let borderColor = '#0F172A';
+  let fillColor = '#FFFFFF';
   let ringHtml = '';
 
   if (isOverloaded) {
-    borderColor = '#c95716';
-    badgeColor = 'bg-red-500';
+    borderColor = '#DC2626';
     ringHtml = `<div class="pulsing-ring-red"></div>`;
   } else if (isDiverted) {
-    borderColor = '#e87518';
-    badgeColor = 'bg-amber-500';
+    borderColor = '#EA580C';
     ringHtml = `<div class="pulsing-ring-amber"></div>`;
   } else if (bus.status === 'UNDERUTILIZED') {
-    borderColor = '#2f8f5b';
-    badgeColor = 'bg-emerald-500';
+    borderColor = '#16A34A';
   }
 
   const iconSize = isSelected ? 48 : 40;
@@ -64,8 +60,8 @@ const createBusIcon = (bus: Bus, isSelected: boolean) => {
         height: ${iconSize - 8}px;
         border-radius: 50%;
         background-color: ${fillColor};
-        border: 2px solid ${borderColor};
-        box-shadow: 0 0 12px ${borderColor}80;
+        border: 2.5px solid ${borderColor};
+        box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -86,14 +82,15 @@ const createBusIcon = (bus: Bus, isSelected: boolean) => {
         bottom: -6px;
         font-family: monospace;
         font-size: 9px;
-        font-weight: bold;
-        color: #17263d;
-        background: rgba(255, 255, 255, 0.94);
+        font-weight: 800;
+        color: #0F172A;
+        background: #FFFFFF;
         border: 1px solid ${borderColor};
         padding: 1px 4px;
         border-radius: 4px;
         white-space: nowrap;
         pointer-events: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       ">
         ${bus.id.replace('BUS-', '')} | ${bus.plfPercent}%
       </div>
@@ -138,13 +135,13 @@ const createStationIcon = (stop: BRTSStop) => {
         white-space: nowrap;
         font-family: monospace;
         font-size: 10px;
-        font-weight: bold;
+        font-weight: 800;
         padding: 2px 6px;
         border-radius: 6px;
-        background: rgba(10, 13, 20, 0.95);
-        border: 1.5px solid #FF1744;
-        color: #FF5252;
-        box-shadow: 0 0 10px rgba(255, 23, 68, 0.7);
+        background: rgba(255, 255, 255, 0.96);
+        border: 1.5px solid #DC2626;
+        color: #B91C1C;
+        box-shadow: 0 2px 8px rgba(220, 38, 38, 0.2);
         pointer-events: none;
         z-index: 100;
       ">
@@ -156,9 +153,9 @@ const createStationIcon = (stop: BRTSStop) => {
         width: 14px;
         height: 14px;
         border-radius: 50%;
-        background-color: #FF1744;
+        background-color: #DC2626;
         border: 2px solid #FFFFFF;
-        box-shadow: 0 0 12px #FF1744, 0 0 6px #FF1744;
+        box-shadow: 0 0 8px rgba(220, 38, 38, 0.5);
         position: relative;
         z-index: 50;
       "></div>
@@ -246,16 +243,16 @@ export default function LeafletMapWrapper({
   const selectedBusTrip = selectedBus ? getBusRouteDetails(selectedBus) : null;
 
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-2xl border border-white/10 shadow-2xl">
+    <div className="relative h-full w-full overflow-hidden rounded-2xl border border-slate-200 shadow-md">
       {/* Interactive Floating Control Bar */}
-      <div className="absolute top-4 right-4 z-[400] flex flex-wrap gap-2 items-center bg-white/90 p-2 rounded-xl border border-slate-200 backdrop-blur-md shadow-xl">
+      <div className="absolute top-4 right-4 z-[400] flex flex-wrap gap-2 items-center bg-white/95 p-2 rounded-xl border border-slate-200 backdrop-blur-md shadow-lg">
         {/* View Range Buttons */}
         <button
           onClick={() => setMapTarget({ center: INDIA_CENTER, zoom: 5 })}
           className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center space-x-1 ${
             mapTarget.zoom === 5
-              ? 'bg-[#163b64] text-white shadow-md'
-              : 'bg-slate-100 text-slate-600 hover:bg-orange-50'
+              ? 'bg-[#0F172A] text-white shadow-md'
+              : 'bg-slate-100 text-slate-700 hover:bg-orange-50'
           }`}
         >
           <span>🇮🇳</span>
@@ -266,22 +263,22 @@ export default function LeafletMapWrapper({
           onClick={() => setMapTarget({ center: BRTS_CENTER, zoom: 13 })}
           className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center space-x-1 ${
             mapTarget.zoom === 13
-              ? 'bg-[#2f8f5b] text-white shadow-md'
-              : 'bg-slate-100 text-slate-600 hover:bg-orange-50'
+              ? 'bg-[#16A34A] text-white shadow-md'
+              : 'bg-slate-100 text-slate-700 hover:bg-orange-50'
           }`}
         >
           <span>🚌</span>
           <span>BRTS CORRIDOR</span>
         </button>
 
-        <div className="h-4 w-[1px] bg-white/20 mx-1" />
+        <div className="h-4 w-[1px] bg-slate-300 mx-1" />
 
         {/* Map Provider Selector */}
         <div className="flex bg-slate-100 rounded-lg p-0.5 border border-slate-200 text-[11px] font-mono">
           <button
             onClick={() => setProvider('google-roadmap')}
-            className={`px-2 py-1 rounded-md font-semibold transition-all ${
-              provider === 'google-roadmap' ? 'bg-[#e87518] text-white' : 'text-slate-500 hover:text-slate-900'
+            className={`px-2 py-1 rounded-md font-bold transition-all ${
+              provider === 'google-roadmap' ? 'bg-[#EA580C] text-white' : 'text-slate-600 hover:text-[#0F172A]'
             }`}
           >
             Google Map
@@ -289,8 +286,8 @@ export default function LeafletMapWrapper({
 
           <button
             onClick={() => setProvider('google-satellite')}
-            className={`px-2 py-1 rounded-md font-semibold transition-all ${
-              provider === 'google-satellite' ? 'bg-[#e87518] text-white' : 'text-slate-500 hover:text-slate-900'
+            className={`px-2 py-1 rounded-md font-bold transition-all ${
+              provider === 'google-satellite' ? 'bg-[#EA580C] text-white' : 'text-slate-600 hover:text-[#0F172A]'
             }`}
           >
             Satellite
@@ -298,11 +295,11 @@ export default function LeafletMapWrapper({
 
           <button
             onClick={() => setProvider('carto')}
-            className={`px-2 py-1 rounded-md font-semibold transition-all ${
-              provider === 'carto' ? 'bg-[#e87518] text-white' : 'text-slate-500 hover:text-slate-900'
+            className={`px-2 py-1 rounded-md font-bold transition-all ${
+              provider === 'carto' ? 'bg-[#EA580C] text-white' : 'text-slate-600 hover:text-[#0F172A]'
             }`}
           >
-            Dark Mode
+            Light Canvas
           </button>
         </div>
       </div>
@@ -515,27 +512,28 @@ export default function LeafletMapWrapper({
       </MapContainer>
 
       {/* Map Legend Overlay */}
-      <div className="absolute bottom-4 left-4 z-[400] rounded-xl bg-white/90 p-3 border border-slate-200 backdrop-blur-md text-[11px] space-y-1.5 font-mono shadow-xl hidden sm:block">
-        <div className="text-[10px] text-gray-400 uppercase tracking-wider font-bold mb-1">BRTS Corridor & Station Legend</div>
+      {/* Map Legend Overlay */}
+      <div className="absolute bottom-4 left-4 z-[400] rounded-xl bg-white/95 p-3 border border-slate-200 backdrop-blur-md text-[11px] space-y-1.5 font-mono shadow-md hidden sm:block text-slate-800">
+        <div className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-1">BRTS Corridor & Station Legend</div>
         <div className="flex items-center space-x-2">
-          <span className="text-amber-400 font-bold">🚩</span>
-          <span className="text-gray-200">RTO Circle (Origin Hub)</span>
+          <span className="text-orange-600 font-bold">🚩</span>
+          <span className="text-slate-800 font-semibold">RTO Circle (Origin Hub)</span>
         </div>
         <div className="flex items-center space-x-2">
-          <span className="text-rose-400 font-bold">🏁</span>
-          <span className="text-gray-200">LD College / CTM (Terminal Stations)</span>
+          <span className="text-red-600 font-bold">🏁</span>
+          <span className="text-slate-800 font-semibold">LD College / CTM (Terminal Stations)</span>
         </div>
         <div className="flex items-center space-x-2">
-          <span className="h-2.5 w-6 rounded bg-[#FF3366]" />
-          <span className="text-gray-200">Route 9 (Overloaded Corridor)</span>
+          <span className="h-2.5 w-6 rounded bg-[#DC2626]" />
+          <span className="text-slate-800 font-semibold">Route 9 (Overloaded Corridor)</span>
         </div>
         <div className="flex items-center space-x-2">
-          <span className="h-2.5 w-6 rounded bg-[#00E676]" />
-          <span className="text-gray-200">Route 12 (Underutilized Corridor)</span>
+          <span className="h-2.5 w-6 rounded bg-[#16A34A]" />
+          <span className="text-slate-800 font-semibold">Route 12 (Underutilized Corridor)</span>
         </div>
         <div className="flex items-center space-x-2">
-          <span className="h-2.5 w-6 rounded bg-[#7C4DFF]" />
-          <span className="text-gray-200">Express 9X (Dynamic Reroute)</span>
+          <span className="h-2.5 w-6 rounded bg-[#EA580C]" />
+          <span className="text-slate-800 font-semibold">Express 9X (Dynamic Reroute)</span>
         </div>
       </div>
     </div>

@@ -71,49 +71,49 @@ export function FleetStatusOverview() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         {/* 1) Total No. Buses in BRTS */}
-        <div className="glass-card rounded-2xl p-5 border border-cyan-500/30 bg-cyan-950/20 flex items-center justify-between">
+        <div className="glass-card rounded-2xl p-5 border border-slate-200 bg-white flex items-center justify-between shadow-sm">
           <div className="space-y-1">
-            <span className="text-xs font-mono text-cyan-400 font-bold uppercase tracking-wider block">
+            <span className="text-xs font-mono text-orange-900 font-bold uppercase tracking-wider block">
               1) TOTAL FLEET BUSES
             </span>
-            <div className="text-3xl font-black font-mono text-white">
-              {totalBuses} <span className="text-sm font-normal text-gray-400">Buses</span>
+            <div className="text-3xl font-black font-mono text-[#0F172A]">
+              {totalBuses} <span className="text-sm font-semibold text-slate-500">Buses</span>
             </div>
-            <p className="text-[11px] text-gray-400 font-mono">Total registered Janmarg BRTS fleet</p>
+            <p className="text-[11px] text-slate-500 font-mono font-medium">Total registered Janmarg BRTS fleet</p>
           </div>
-          <div className="h-14 w-14 rounded-2xl bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 flex items-center justify-center">
+          <div className="h-14 w-14 rounded-2xl bg-orange-100 text-orange-800 border border-orange-300 flex items-center justify-center">
             <BusIcon className="h-7 w-7" />
           </div>
         </div>
 
         {/* 2) Running Buses */}
-        <div className="glass-card rounded-2xl p-5 border border-emerald-500/30 bg-emerald-950/20 flex items-center justify-between">
+        <div className="glass-card rounded-2xl p-5 border border-slate-200 bg-white flex items-center justify-between shadow-sm">
           <div className="space-y-1">
-            <span className="text-xs font-mono text-emerald-400 font-bold uppercase tracking-wider block">
+            <span className="text-xs font-mono text-emerald-800 font-bold uppercase tracking-wider block">
               2) RUNNING BUSES
             </span>
-            <div className="text-3xl font-black font-mono text-emerald-400">
-              {actualRunningList.length} <span className="text-sm font-normal text-gray-400">Active</span>
+            <div className="text-3xl font-black font-mono text-emerald-800">
+              {actualRunningList.length} <span className="text-sm font-semibold text-slate-500">Active</span>
             </div>
-            <p className="text-[11px] text-gray-400 font-mono">Currently moving on live corridors</p>
+            <p className="text-[11px] text-slate-500 font-mono font-medium">Currently moving on live corridors</p>
           </div>
-          <div className="h-14 w-14 rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center">
+          <div className="h-14 w-14 rounded-2xl bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center justify-center">
             <Activity className="h-7 w-7 animate-pulse" />
           </div>
         </div>
 
         {/* 3) Parked Buses with Location */}
-        <div className="glass-card rounded-2xl p-5 border border-amber-500/30 bg-amber-950/20 flex items-center justify-between">
+        <div className="glass-card rounded-2xl p-5 border border-slate-200 bg-white flex items-center justify-between shadow-sm">
           <div className="space-y-1">
-            <span className="text-xs font-mono text-amber-400 font-bold uppercase tracking-wider block">
+            <span className="text-xs font-mono text-amber-900 font-bold uppercase tracking-wider block">
               3) PARKED BUSES (WITH LOCATION)
             </span>
-            <div className="text-3xl font-black font-mono text-amber-300">
-              {totalParked} <span className="text-sm font-normal text-gray-400">Parked</span>
+            <div className="text-3xl font-black font-mono text-amber-900">
+              {totalParked} <span className="text-sm font-semibold text-slate-500">Parked</span>
             </div>
-            <p className="text-[11px] text-gray-400 font-mono">Stationed at terminal depots & yards</p>
+            <p className="text-[11px] text-slate-500 font-mono font-medium">Stationed at terminal depots & yards</p>
           </div>
-          <div className="h-14 w-14 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center">
+          <div className="h-14 w-14 rounded-2xl bg-amber-100 text-amber-800 border border-amber-300 flex items-center justify-center">
             <ParkingCircle className="h-7 w-7" />
           </div>
         </div>
@@ -121,10 +121,10 @@ export function FleetStatusOverview() {
       </div>
 
       {/* Main Bus Directory Section */}
-      <div className="glass-card rounded-2xl border border-white/10 p-5 space-y-4">
+      <div className="glass-card rounded-2xl border border-slate-200 bg-white p-5 space-y-4 shadow-sm">
         
         {/* Controls Bar: Tabs & Search */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/20 pb-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
           
           {/* Status Tabs */}
           <div className="flex items-center space-x-2 font-mono text-xs">
@@ -132,8 +132,8 @@ export function FleetStatusOverview() {
               onClick={() => setActiveTab('ALL')}
               className={`px-4 py-2 rounded-xl transition-all font-bold ${
                 activeTab === 'ALL'
-                  ? 'bg-cyan-400 text-black shadow-glow-cyan'
-                  : 'bg-white/10 text-slate-100 hover:text-white hover:bg-white/20 border border-white/10'
+                  ? 'bg-orange-600 text-white shadow-brts-saffron'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
               }`}
             >
               ALL BUSES ({totalBuses})
@@ -142,8 +142,8 @@ export function FleetStatusOverview() {
               onClick={() => setActiveTab('RUNNING')}
               className={`px-4 py-2 rounded-xl transition-all font-bold flex items-center space-x-1.5 ${
                 activeTab === 'RUNNING'
-                  ? 'bg-emerald-400 text-black shadow-glow-green'
-                  : 'bg-white/10 text-slate-100 hover:text-white hover:bg-white/20 border border-white/10'
+                  ? 'bg-emerald-700 text-white shadow-sm'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
               }`}
             >
               <Activity className="h-3.5 w-3.5" />
@@ -153,8 +153,8 @@ export function FleetStatusOverview() {
               onClick={() => setActiveTab('PARKED')}
               className={`px-4 py-2 rounded-xl transition-all font-bold flex items-center space-x-1.5 ${
                 activeTab === 'PARKED'
-                  ? 'bg-amber-400 text-black shadow-glow-amber'
-                  : 'bg-white/10 text-slate-100 hover:text-white hover:bg-white/20 border border-white/10'
+                  ? 'bg-amber-600 text-white shadow-sm'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
               }`}
             >
               <ParkingCircle className="h-3.5 w-3.5" />
@@ -164,13 +164,13 @@ export function FleetStatusOverview() {
 
           {/* Search Box */}
           <div className="relative w-full md:w-72 font-mono">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-300" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
             <input
               type="text"
               placeholder="Search Bus ID, Reg No, Location..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-xl bg-[#0a192f] pl-9 pr-3 py-2 text-xs text-white font-bold placeholder-slate-300 border border-white/30 focus:border-cyan-400 focus:outline-none"
+              className="w-full rounded-xl bg-white pl-9 pr-3 py-2 text-xs text-slate-900 font-bold placeholder-slate-400 border border-slate-300 focus:border-orange-500 focus:outline-none"
             />
           </div>
 
@@ -180,7 +180,7 @@ export function FleetStatusOverview() {
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs font-mono">
             <thead>
-              <tr className="border-b border-white/20 text-slate-200 font-bold text-[11px] uppercase">
+              <tr className="border-b border-slate-200 text-slate-500 font-bold text-[11px] uppercase bg-slate-50">
                 <th className="py-3 px-3">BUS ID</th>
                 <th className="py-3 px-3">BUS NUMBER / REG</th>
                 <th className="py-3 px-3">STATUS</th>
@@ -190,30 +190,30 @@ export function FleetStatusOverview() {
                 <th className="py-3 px-3">PASSENGER LOAD</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/10">
+            <tbody className="divide-y divide-slate-100 bg-white">
               {displayList.map((bus) => (
-                <tr key={bus.id} className="hover:bg-white/10 transition-colors">
+                <tr key={bus.id} className="hover:bg-slate-50 transition-colors">
                   
                   {/* Bus ID */}
-                  <td className="py-3 px-3 font-bold text-white flex items-center space-x-2">
-                    <BusIcon className={`h-4 w-4 ${bus.isParked ? 'text-amber-400' : 'text-cyan-400'}`} />
+                  <td className="py-3 px-3 font-bold text-[#0F172A] flex items-center space-x-2">
+                    <BusIcon className={`h-4 w-4 ${bus.isParked ? 'text-amber-600' : 'text-orange-600'}`} />
                     <span>{bus.id}</span>
                   </td>
 
                   {/* Bus Number */}
-                  <td className="py-3 px-3 text-cyan-300 font-bold">
+                  <td className="py-3 px-3 text-orange-900 font-bold">
                     {bus.busNumber}
                   </td>
 
                   {/* Status Badge */}
                   <td className="py-3 px-3">
                     {bus.isParked ? (
-                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/30 text-amber-200 border border-amber-400 inline-flex items-center space-x-1">
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300 inline-flex items-center space-x-1">
                         <ParkingCircle className="h-3 w-3" />
                         <span>PARKED ({bus.parkedStatus})</span>
                       </span>
                     ) : (
-                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/30 text-emerald-300 border border-emerald-400 inline-flex items-center space-x-1">
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 inline-flex items-center space-x-1">
                         <Activity className="h-3 w-3 animate-pulse" />
                         <span>RUNNING ({bus.status})</span>
                       </span>
@@ -221,18 +221,18 @@ export function FleetStatusOverview() {
                   </td>
 
                   {/* Route */}
-                  <td className="py-3 px-3 text-slate-100 font-semibold max-w-[180px] truncate" title={bus.routeName}>
+                  <td className="py-3 px-3 text-slate-800 font-semibold max-w-[180px] truncate" title={bus.routeName}>
                     {bus.isDiverted ? (
-                      <span className="text-amber-300 font-bold">Route 9 Express (Diverted)</span>
+                      <span className="text-orange-900 font-bold">Route 9 Express (Diverted)</span>
                     ) : (
                       bus.routeName
                     )}
                   </td>
 
                   {/* Location */}
-                  <td className="py-3 px-3 text-white font-bold">
+                  <td className="py-3 px-3 text-[#0F172A] font-bold">
                     <div className="flex items-center space-x-1.5">
-                      <MapPin className={`h-3.5 w-3.5 shrink-0 ${bus.isParked ? 'text-amber-400' : 'text-cyan-400'}`} />
+                      <MapPin className={`h-3.5 w-3.5 shrink-0 ${bus.isParked ? 'text-amber-600' : 'text-orange-600'}`} />
                       <span className="font-bold">{bus.isParked ? bus.depotLocation : bus.currentStop}</span>
                     </div>
                   </td>
@@ -240,26 +240,26 @@ export function FleetStatusOverview() {
                   {/* Speed */}
                   <td className="py-3 px-3 font-bold">
                     {bus.isParked ? (
-                      <span className="text-slate-300 font-bold">0 km/h (Parked)</span>
+                      <span className="text-slate-500 font-bold">0 km/h (Parked)</span>
                     ) : (
-                      <span className="text-emerald-400 font-bold">{bus.effectiveSpeed} km/h</span>
+                      <span className="text-emerald-800 font-bold">{bus.effectiveSpeed} km/h</span>
                     )}
                   </td>
 
                   {/* Passengers / PLF */}
                   <td className="py-3 px-3">
                     {bus.isParked ? (
-                      <span className="text-slate-300 font-bold">0 / {bus.capacity} (0%)</span>
+                      <span className="text-slate-500 font-bold">0 / {bus.capacity} (0%)</span>
                     ) : (
                       <div className="space-y-1 max-w-[120px]">
                         <div className="flex justify-between text-[10px]">
-                          <span className="text-slate-200 font-semibold">{bus.currentPassengers}/{bus.capacity} pax</span>
-                          <span className="text-cyan-300 font-bold">{bus.plfPercent}%</span>
+                          <span className="text-slate-700 font-semibold">{bus.currentPassengers}/{bus.capacity} pax</span>
+                          <span className="text-orange-900 font-bold">{bus.plfPercent}%</span>
                         </div>
-                        <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden border border-white/20">
+                        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
                           <div
                             className={`h-full rounded-full ${
-                              bus.plfPercent > 100 ? 'bg-red-400' : 'bg-cyan-400'
+                              bus.plfPercent > 100 ? 'bg-red-600' : 'bg-orange-500'
                             }`}
                             style={{ width: `${Math.min(100, bus.plfPercent)}%` }}
                           />

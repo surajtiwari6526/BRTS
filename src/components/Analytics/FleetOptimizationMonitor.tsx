@@ -41,7 +41,7 @@ export const FleetOptimizationMonitor: React.FC = () => {
   };
 
   return (
-    <div className="glass-card rounded-3xl p-6 border border-orange-300/60 bg-orange-50/35 space-y-6">
+    <div className="glass-card rounded-3xl p-6 border border-white/15 bg-[#0f172a]/90 space-y-6">
       
       {/* Header Title */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-amber-500/20 pb-4">
@@ -56,7 +56,7 @@ export const FleetOptimizationMonitor: React.FC = () => {
                 DYNAMIC RATIONALIZATION
               </span>
             </h2>
-            <p className="text-xs text-gray-400 font-mono">
+            <p className="text-xs text-slate-300 font-mono font-medium">
               Real-Time Fleet Demand Rationalization Engine — Prevents Empty Bus Runs & Reallocates Excess Fleet
             </p>
           </div>
@@ -73,18 +73,18 @@ export const FleetOptimizationMonitor: React.FC = () => {
       </div>
 
       {/* Low Rush Corridor Analysis Card */}
-      <div className="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/30 space-y-4">
+      <div className="p-5 rounded-2xl bg-amber-950/30 border border-amber-500/40 space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-amber-500/20 pb-3">
           <div>
-            <span className="text-xs font-mono text-amber-400 font-bold uppercase tracking-wider block">
+            <span className="text-xs font-mono text-amber-300 font-bold uppercase tracking-wider block">
               LOW-RUSH CORRIDOR EVALUATION: ROUTE 12
             </span>
-              <h3 className="text-base font-bold font-mono text-white">
+            <h3 className="text-base font-black font-mono text-white">
               {route12Optimization.routeName}
             </h3>
           </div>
           <div className="flex items-center space-x-2">
-            <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+            <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
               🟢 LOW DEMAND (AVG {avgPlfR12}% PLF)
             </span>
             <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
@@ -97,35 +97,35 @@ export const FleetOptimizationMonitor: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
           
           {/* Active vs Required */}
-            <div className="p-3.5 rounded-xl bg-white/60 border border-slate-200 space-y-1">
-            <span className="text-gray-400 text-[10px] block">ACTIVE FLEET VS REQUIRED</span>
+          <div className="p-3.5 rounded-xl bg-[#0a192f] border border-white/20 space-y-1">
+            <span className="text-slate-300 text-[10px] block font-bold">ACTIVE FLEET VS REQUIRED</span>
             <div className="flex items-baseline space-x-2">
               <span className="text-2xl font-black text-white">{route12Optimization.totalActiveBuses} Buses</span>
               <span className="text-amber-400 font-bold">➔ Need {route12Optimization.requiredBusesCount}</span>
             </div>
-            <p className="text-[10px] text-gray-400">
-              Total Demand: <strong className="text-white">{route12Optimization.totalPassengersOnRoute} Pax</strong> on Route 12
+            <p className="text-[10px] text-slate-300 font-medium">
+              Total Demand: <strong className="text-white font-bold">{route12Optimization.totalPassengersOnRoute} Pax</strong> on Route 12
             </p>
           </div>
 
           {/* Excess Fleet Identified */}
-            <div className="p-3.5 rounded-xl bg-orange-50/60 border border-orange-200 space-y-1">
-            <span className="text-amber-400 text-[10px] block font-bold">EXCESS UNNEEDED BUSES</span>
+          <div className="p-3.5 rounded-xl bg-[#0a192f] border border-amber-500/40 space-y-1">
+            <span className="text-amber-300 text-[10px] block font-bold">EXCESS UNNEEDED BUSES</span>
             <div className="text-2xl font-black text-amber-300">
               {route12Optimization.excessBusesCount} Surplus Vehicles
             </div>
-            <p className="text-[10px] text-gray-300">
+            <p className="text-[10px] text-slate-300 font-medium">
               Running below optimal load threshold (&lt;30% PLF)
             </p>
           </div>
 
           {/* Operations directive */}
-          <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1">
+          <div className="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/40 space-y-1">
             <span className="text-emerald-400 text-[10px] block font-bold">OPTIMIZATION IMPACT</span>
             <div className="text-sm font-bold text-white">
               +₹4,820/hr Net DPR Benefit
             </div>
-            <p className="text-[10px] text-emerald-300">
+            <p className="text-[10px] text-emerald-300 font-medium">
               Absorbs Route 9 surge without adding new fleet
             </p>
           </div>
@@ -133,7 +133,7 @@ export const FleetOptimizationMonitor: React.FC = () => {
         </div>
 
         {/* Recommendation Text Banner */}
-        <div className="p-3 rounded-xl bg-amber-500/20 border border-amber-500/40 text-xs font-mono text-amber-200 flex items-center space-x-2">
+        <div className="p-3 rounded-xl bg-amber-500/20 border border-amber-500/40 text-xs font-mono text-amber-200 font-semibold flex items-center space-x-2">
           <AlertCircle className="h-4 w-4 text-amber-400 shrink-0" />
           <span>{route12Optimization.recommendationText}</span>
         </div>
@@ -141,27 +141,27 @@ export const FleetOptimizationMonitor: React.FC = () => {
 
       {/* Empty / Low-Rush Bus Telemetry List */}
       <div className="space-y-3">
-        <div className="flex items-center justify-between text-xs font-mono text-gray-400">
+        <div className="flex items-center justify-between text-xs font-mono text-slate-200 font-bold">
           <span className="font-bold text-white uppercase flex items-center space-x-1.5">
             <Bus className="h-4 w-4 text-amber-400" />
             <span>IDENTIFIED UNDERUTILIZED & EMPTY BUS TELEMETRY (PLF &lt; 35%)</span>
           </span>
-          <span>{emptyBuses.length} Candidates Ready for Reallocation</span>
+          <span className="text-amber-300">{emptyBuses.length} Candidates Ready for Reallocation</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {emptyBuses.map((bus) => (
             <div
               key={bus.id}
-              className="p-4 rounded-2xl bg-white/65 border border-orange-200 hover:border-orange-400 transition-all space-y-3 font-mono text-xs"
+              className="p-4 rounded-2xl bg-[#0a192f] border border-white/20 hover:border-amber-400 transition-all space-y-3 font-mono text-xs"
             >
               {/* Bus Header */}
               <div className="flex items-center justify-between border-b border-white/10 pb-2">
                 <div>
                   <span className="font-bold text-amber-300 text-sm">{bus.id}</span>
-                  <span className="text-[10px] text-gray-400 block">{bus.busNumber}</span>
+                  <span className="text-[10px] text-slate-300 font-semibold block">{bus.busNumber}</span>
                 </div>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
                   {bus.plfPercent}% PLF (LOW)
                 </span>
               </div>
@@ -169,26 +169,26 @@ export const FleetOptimizationMonitor: React.FC = () => {
               {/* Load Metrics */}
               <div className="grid grid-cols-2 gap-2 text-[11px]">
                 <div>
-                  <span className="text-gray-400 block text-[9px]">SEATS FILLED</span>
+                  <span className="text-slate-300 block text-[9px] font-semibold">SEATS FILLED</span>
                   <span className="text-white font-bold">{bus.currentPassengers} / {bus.capacity}</span>
                 </div>
                 <div>
-                  <span className="text-gray-400 block text-[9px]">VACANT SEATS</span>
+                  <span className="text-slate-300 block text-[9px] font-semibold">VACANT SEATS</span>
                   <span className="text-emerald-400 font-bold">{bus.capacity - bus.currentPassengers} Seats</span>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-gray-400 block text-[9px]">CURRENT LOCATION</span>
+                  <span className="text-slate-300 block text-[9px] font-semibold">CURRENT LOCATION</span>
                   <span className="text-cyan-300 font-semibold">{bus.currentStop} ({bus.speedKmph} km/h)</span>
                 </div>
               </div>
 
               {/* Progress Bar */}
               <div className="space-y-1">
-                <div className="flex justify-between text-[9px] text-gray-400">
+                <div className="flex justify-between text-[9px] text-slate-300 font-semibold">
                   <span>Passenger Load Meter</span>
                   <span className="text-emerald-400 font-bold">{bus.plfPercent}%</span>
                 </div>
-                <div className="h-1.5 w-full rounded-full bg-slate-900 overflow-hidden">
+                <div className="h-1.5 w-full rounded-full bg-slate-900 border border-white/20 overflow-hidden">
                   <div
                     className="h-full rounded-full bg-emerald-400 transition-all duration-500"
                     style={{ width: `${Math.min(100, bus.plfPercent)}%` }}
@@ -208,9 +208,9 @@ export const FleetOptimizationMonitor: React.FC = () => {
           ))}
 
           {emptyBuses.length === 0 && (
-            <div className="col-span-3 p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-center text-xs font-mono text-emerald-700 flex flex-col items-center justify-center space-y-2">
+            <div className="col-span-3 p-6 rounded-2xl bg-emerald-950/30 border border-emerald-500/40 text-center text-xs font-mono text-emerald-300 flex flex-col items-center justify-center space-y-2">
               <ShieldCheck className="h-8 w-8 text-emerald-400" />
-              <span>All empty/underutilized buses have been successfully reallocated to high-surge corridors!</span>
+              <span className="font-bold">All empty/underutilized buses have been successfully reallocated to high-surge corridors!</span>
             </div>
           )}
         </div>

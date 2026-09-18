@@ -82,24 +82,24 @@ export function CustomDiversionForm() {
   };
 
   return (
-    <div className="glass-card rounded-2xl border border-amber-500/30 bg-amber-950/20 p-5 space-y-5">
+    <div className="glass-card rounded-2xl border border-orange-200 bg-white p-5 space-y-5 shadow-sm">
       
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/10 pb-3">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-3">
         <div className="flex items-center space-x-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-100 text-orange-800 border border-orange-300">
             <ArrowRightLeft className="h-5 w-5" />
           </div>
           <div>
-            <span className="font-mono text-[10px] font-bold text-amber-400 tracking-wider uppercase block">
+            <span className="font-mono text-[10px] font-bold text-orange-900 tracking-wider uppercase block">
               MANUAL DISPATCH CONTROL
             </span>
-            <h3 className="font-mono text-base font-bold text-white tracking-wide">
+            <h3 className="font-mono text-base font-bold text-[#0F172A] tracking-wide">
               CUSTOM BUS DIVERSION PANEL
             </h3>
           </div>
         </div>
-        <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+        <span className="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-orange-100 text-orange-900 border border-orange-300">
           OPERATOR OVERRIDE
         </span>
       </div>
@@ -108,17 +108,17 @@ export function CustomDiversionForm() {
         
         {/* Row 1: Bus Selection */}
         <div className="space-y-1.5">
-          <label className="text-white font-bold flex items-center space-x-1.5">
-            <BusIcon className="h-4 w-4 text-cyan-400" />
+          <label className="text-[#0F172A] font-bold flex items-center space-x-1.5">
+            <BusIcon className="h-4 w-4 text-orange-600" />
             <span>SELECT VEHICLE TO DIVERT</span>
           </label>
           <select
             value={selectedBusId}
             onChange={(e) => setSelectedBusId(e.target.value)}
-            className="w-full rounded-xl bg-[#091b33] border border-white/30 p-2.5 text-white font-bold focus:border-amber-400 focus:outline-none shadow-sm"
+            className="w-full rounded-xl bg-white border border-slate-300 p-2.5 text-[#0F172A] font-bold focus:border-orange-500 focus:outline-none shadow-2xs"
           >
             {buses.map((bus) => (
-              <option key={bus.id} value={bus.id} className="bg-[#0a192f] text-white font-bold">
+              <option key={bus.id} value={bus.id} className="bg-white text-[#0F172A] font-bold">
                 {bus.id} ({bus.busNumber}) - Current: {bus.routeName} [{bus.currentStop}] {bus.isDiverted ? '(DIVERTED)' : ''}
               </option>
             ))}
@@ -130,8 +130,8 @@ export function CustomDiversionForm() {
           
           {/* 1) Route Number (Dropdown) */}
           <div className="space-y-1.5">
-            <label className="text-amber-300 font-bold flex items-center space-x-1.5">
-              <Navigation className="h-4 w-4 text-amber-400" />
+            <label className="text-orange-900 font-bold flex items-center space-x-1.5">
+              <Navigation className="h-4 w-4 text-orange-600" />
               <span>1) ROUTE NUMBER</span>
             </label>
             <select
@@ -144,14 +144,14 @@ export function CustomDiversionForm() {
                   setDestinationStation(routeObj.endPoint);
                 }
               }}
-              className="w-full rounded-xl bg-[#091b33] border border-white/30 p-2.5 text-white font-bold focus:border-amber-400 focus:outline-none shadow-sm"
+              className="w-full rounded-xl bg-white border border-slate-300 p-2.5 text-[#0F172A] font-bold focus:border-orange-500 focus:outline-none shadow-2xs"
             >
               {BRTS_ROUTES.map((route) => (
-                <option key={route.routeNo} value={route.routeNo} className="bg-[#0a192f] text-white font-bold">
+                <option key={route.routeNo} value={route.routeNo} className="bg-white text-[#0F172A] font-bold">
                   Route {route.routeNo} : {route.routeName}
                 </option>
               ))}
-              <option value="9_EXPRESS" className="bg-[#0a192f] text-amber-300 font-bold">
+              <option value="9_EXPRESS" className="bg-white text-orange-900 font-bold">
                 Route 9 Express (RTO Circle ➔ LD College)
               </option>
             </select>
@@ -159,17 +159,17 @@ export function CustomDiversionForm() {
 
           {/* 2) Origin Station (Dropdown) */}
           <div className="space-y-1.5">
-            <label className="text-cyan-300 font-bold flex items-center space-x-1.5">
-              <MapPin className="h-4 w-4 text-cyan-400" />
+            <label className="text-[#0F172A] font-bold flex items-center space-x-1.5">
+              <MapPin className="h-4 w-4 text-orange-600" />
               <span>2) ORIGIN STATION</span>
             </label>
             <select
               value={originStation}
               onChange={(e) => setOriginStation(e.target.value)}
-              className="w-full rounded-xl bg-[#091b33] border border-white/30 p-2.5 text-white font-bold focus:border-cyan-400 focus:outline-none shadow-sm"
+              className="w-full rounded-xl bg-white border border-slate-300 p-2.5 text-[#0F172A] font-bold focus:border-orange-500 focus:outline-none shadow-2xs"
             >
               {AHMEDABAD_STOPS.map((stop) => (
-                <option key={stop.id} value={stop.name} className="bg-[#0a192f] text-white font-bold">
+                <option key={stop.id} value={stop.name} className="bg-white text-[#0F172A] font-bold">
                   {stop.name} (Corridor {stop.routeId})
                 </option>
               ))}
@@ -180,17 +180,17 @@ export function CustomDiversionForm() {
 
         {/* Row 3: 3) Drop (Destination Station) Dropdown */}
         <div className="space-y-1.5">
-          <label className="text-emerald-300 font-bold flex items-center space-x-1.5">
-            <MapPin className="h-4 w-4 text-emerald-400" />
+          <label className="text-emerald-800 font-bold flex items-center space-x-1.5">
+            <MapPin className="h-4 w-4 text-emerald-600" />
             <span>3) DROP (DESTINATION STATION)</span>
           </label>
           <select
             value={destinationStation}
             onChange={(e) => setDestinationStation(e.target.value)}
-            className="w-full rounded-xl bg-[#091b33] border border-white/30 p-2.5 text-white font-bold focus:border-emerald-400 focus:outline-none shadow-sm"
+            className="w-full rounded-xl bg-white border border-slate-300 p-2.5 text-[#0F172A] font-bold focus:border-emerald-600 focus:outline-none shadow-2xs"
           >
             {AHMEDABAD_STOPS.map((stop) => (
-              <option key={stop.id} value={stop.name} className="bg-[#0a192f] text-white font-bold">
+              <option key={stop.id} value={stop.name} className="bg-white text-[#0F172A] font-bold">
                 {stop.name} (Corridor {stop.routeId})
               </option>
             ))}
@@ -198,16 +198,16 @@ export function CustomDiversionForm() {
         </div>
 
         {/* Row 4: 4) Through Which Way (Checkboxes) */}
-        <div className="space-y-2 pt-2 border-t border-white/20">
-          <label className="text-amber-300 font-bold flex items-center justify-between">
+        <div className="space-y-2 pt-2 border-t border-slate-200">
+          <label className="text-orange-900 font-bold flex items-center justify-between">
             <div className="flex items-center space-x-1.5">
-              <Sparkles className="h-4 w-4 text-yellow-400" />
+              <Sparkles className="h-4 w-4 text-orange-600" />
               <span>4) THROUGH WHICH WAY (SELECT VIA CHECKBOXES)</span>
             </div>
-            <span className="text-[11px] text-slate-200 font-semibold">Select intermediate corridors</span>
+            <span className="text-[11px] text-slate-500 font-semibold">Select intermediate corridors</span>
           </label>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-[#09182d] p-3 rounded-xl border border-white/20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
             {VIA_WAYPOINT_OPTIONS.map((way) => {
               const isChecked = selectedViaWays.includes(way.id);
               return (
@@ -217,16 +217,16 @@ export function CustomDiversionForm() {
                   onClick={() => toggleViaWay(way.id)}
                   className={`flex items-center space-x-2.5 p-2.5 rounded-lg text-left transition-all ${
                     isChecked
-                      ? 'bg-amber-500/30 text-amber-200 border border-amber-400 font-bold shadow-sm'
-                      : 'bg-white/10 text-slate-100 hover:bg-white/20 hover:text-white border border-white/10 font-semibold'
+                      ? 'bg-orange-100 text-orange-900 border border-orange-300 font-bold shadow-2xs'
+                      : 'bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 font-semibold'
                   }`}
                 >
                   {isChecked ? (
-                    <CheckSquare className="h-4 w-4 text-amber-400 shrink-0" />
+                    <CheckSquare className="h-4 w-4 text-orange-600 shrink-0" />
                   ) : (
-                    <Square className="h-4 w-4 text-slate-300 shrink-0" />
+                    <Square className="h-4 w-4 text-slate-400 shrink-0" />
                   )}
-                  <span className="text-xs text-white font-medium">{way.label}</span>
+                  <span className="text-xs text-slate-900 font-medium">{way.label}</span>
                 </button>
               );
             })}
@@ -235,8 +235,8 @@ export function CustomDiversionForm() {
 
         {/* Success Alert Banner */}
         {isSuccess && (
-          <div className="p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold flex items-center space-x-2 animate-fadeIn">
-            <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
+          <div className="p-3 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold flex items-center space-x-2 animate-fadeIn">
+            <CheckCircle2 className="h-5 w-5 text-emerald-700 shrink-0" />
             <span>
               BUS {selectedBusId} SUCCESSFULLY DIVERTED TO ROUTE {selectedRouteNo} ({originStation} ➔ {destinationStation})!
             </span>
@@ -246,9 +246,9 @@ export function CustomDiversionForm() {
         {/* Submit Action Button */}
         <button
           type="submit"
-          className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 text-black font-mono font-black text-xs tracking-wider hover:brightness-125 shadow-glow-amber transition-all transform active:scale-95 flex items-center justify-center space-x-2"
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-orange-600 via-amber-600 to-orange-600 text-white font-mono font-black text-xs tracking-wider shadow-brts-saffron hover:brightness-110 transition-all border border-orange-500 flex items-center justify-center space-x-2"
         >
-          <Send className="h-4 w-4 fill-black" />
+          <Send className="h-4 w-4 fill-white" />
           <span>EXECUTE CUSTOM BUS DIVERSION</span>
         </button>
 

@@ -54,10 +54,10 @@ export const StationTicketingMonitor: React.FC = () => {
   const r9Pct = totalTicketsSold ? Math.round((r9Tickets / totalTicketsSold) * 100) : 65;
 
   return (
-    <div className="glass-card rounded-3xl p-6 border border-slate-300 bg-slate-50/45 space-y-6">
+    <div className="glass-card rounded-3xl p-6 border border-white/15 bg-[#0f172a]/90 space-y-6">
       
       {/* Header Title */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/15 pb-4">
         <div className="flex items-center space-x-3">
           <div className="h-10 w-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-glow-cyan">
             <Ticket className="h-5 w-5" />
@@ -67,18 +67,18 @@ export const StationTicketingMonitor: React.FC = () => {
               <span>AFCS REAL-TIME TICKETING & STATION RUSH ANALYTICS</span>
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
             </h2>
-            <p className="text-xs text-gray-400 font-mono">
+            <p className="text-xs text-slate-300 font-mono font-medium">
               Janmarg Automated Fare Collection System (AFCS) Live Telemetry & Passenger Turnstile Rush Meter
             </p>
           </div>
         </div>
 
         {/* Station Filter Tabs */}
-        <div className="flex items-center space-x-1 bg-white/70 p-1 rounded-xl border border-slate-200 text-xs font-mono">
+        <div className="flex items-center space-x-1 bg-[#0a192f] p-1.5 rounded-xl border border-white/20 text-xs font-mono">
           <button
             onClick={() => setFilter('ALL')}
             className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              filter === 'ALL' ? 'bg-cyan-500 text-black shadow-glow-cyan' : 'text-gray-400 hover:text-white'
+              filter === 'ALL' ? 'bg-cyan-400 text-black shadow-glow-cyan font-black' : 'text-slate-200 hover:text-white'
             }`}
           >
             ALL STATIONS ({stops.length})
@@ -86,7 +86,7 @@ export const StationTicketingMonitor: React.FC = () => {
           <button
             onClick={() => setFilter('SURGE')}
             className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              filter === 'SURGE' ? 'bg-red-500 text-white shadow-glow-red' : 'text-gray-400 hover:text-white'
+              filter === 'SURGE' ? 'bg-red-500 text-white shadow-glow-red font-black' : 'text-slate-200 hover:text-white'
             }`}
           >
             🔴 HIGH RUSH SURGE
@@ -94,7 +94,7 @@ export const StationTicketingMonitor: React.FC = () => {
           <button
             onClick={() => setFilter('LOW')}
             className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-              filter === 'LOW' ? 'bg-emerald-500 text-black shadow-glow-emerald' : 'text-gray-400 hover:text-white'
+              filter === 'LOW' ? 'bg-emerald-400 text-black shadow-glow-emerald font-black' : 'text-slate-200 hover:text-white'
             }`}
           >
             🟢 LOW RUSH
@@ -106,42 +106,42 @@ export const StationTicketingMonitor: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* KPI 1: Total Tickets */}
-          <div className="p-4 rounded-2xl bg-white/5 border border-slate-300 bg-slate-50/45 space-y-1">
-          <div className="flex items-center justify-between text-xs font-mono text-gray-400">
+        <div className="p-4 rounded-2xl bg-cyan-950/30 border border-cyan-500/40 space-y-1">
+          <div className="flex items-center justify-between text-xs font-mono text-slate-200 font-bold">
             <span>TOTAL TICKETS SOLD (1HR)</span>
             <Ticket className="h-4 w-4 text-cyan-400" />
           </div>
           <div className="text-2xl font-black font-mono text-cyan-300">
-            {totalTicketsSold.toLocaleString()} <span className="text-xs font-normal text-gray-400">Passes</span>
+            {totalTicketsSold.toLocaleString()} <span className="text-xs font-semibold text-slate-300">Passes</span>
           </div>
-          <div className="text-[10px] font-mono text-emerald-400 flex items-center space-x-1">
+          <div className="text-[10px] font-mono text-emerald-300 font-bold flex items-center space-x-1">
             <TrendingUp className="h-3 w-3" />
             <span>+14.2% Surge vs previous hour</span>
           </div>
         </div>
 
         {/* KPI 2: Total Revenue */}
-          <div className="p-4 rounded-2xl bg-white/5 border border-slate-200 space-y-1">
-          <div className="flex items-center justify-between text-xs font-mono text-gray-400">
+        <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/40 space-y-1">
+          <div className="flex items-center justify-between text-xs font-mono text-slate-200 font-bold">
             <span>AFCS FARE REVENUE</span>
             <DollarSign className="h-4 w-4 text-emerald-400" />
           </div>
           <div className="text-2xl font-black font-mono text-emerald-400">
             ₹{totalRevenueRupees.toLocaleString()}
           </div>
-          <div className="text-[10px] font-mono text-gray-400">
+          <div className="text-[10px] font-mono text-slate-300 font-medium">
             Flat Rate ₹15 / Ticket (QR + Smart Card)
           </div>
         </div>
 
         {/* KPI 3: Route 9 Ticket Surge */}
-        <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 space-y-1">
-          <div className="flex items-center justify-between text-xs font-mono text-red-300">
+        <div className="p-4 rounded-2xl bg-red-950/40 border border-red-500/40 space-y-1">
+          <div className="flex items-center justify-between text-xs font-mono text-red-300 font-bold">
             <span>CORRIDOR 9 DEMAND</span>
             <AlertTriangle className="h-4 w-4 text-red-400 animate-pulse" />
           </div>
           <div className="text-2xl font-black font-mono text-red-400">
-            {r9Tickets.toLocaleString()} <span className="text-xs font-normal text-red-300">({r9Pct}%)</span>
+            {r9Tickets.toLocaleString()} <span className="text-xs font-semibold text-red-200">({r9Pct}%)</span>
           </div>
           <div className="text-[10px] font-mono text-red-300 font-bold">
             🔴 CRITICAL PASSENGER SURGE
@@ -149,13 +149,13 @@ export const StationTicketingMonitor: React.FC = () => {
         </div>
 
         {/* KPI 4: Route 12 Surplus */}
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-1">
-          <div className="flex items-center justify-between text-xs font-mono text-emerald-300">
+        <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/40 space-y-1">
+          <div className="flex items-center justify-between text-xs font-mono text-emerald-300 font-bold">
             <span>CORRIDOR 12 DEMAND</span>
             <CheckCircle className="h-4 w-4 text-emerald-400" />
           </div>
           <div className="text-2xl font-black font-mono text-emerald-400">
-            {r12Tickets.toLocaleString()} <span className="text-xs font-normal text-emerald-300">({100 - r9Pct}%)</span>
+            {r12Tickets.toLocaleString()} <span className="text-xs font-semibold text-emerald-200">({100 - r9Pct}%)</span>
           </div>
           <div className="text-[10px] font-mono text-emerald-300 font-bold">
             🟢 LOW RUSH — READY FOR REROUTE
@@ -165,17 +165,17 @@ export const StationTicketingMonitor: React.FC = () => {
       </div>
 
       {/* Visual Route Ticket Demand Balance Bar */}
-      <div className="p-4 rounded-2xl bg-white/65 border border-slate-200 space-y-2">
-        <div className="flex justify-between text-xs font-mono">
-          <span className="text-red-400 font-bold flex items-center space-x-1.5">
+      <div className="p-4 rounded-2xl bg-[#0a192f] border border-white/20 space-y-2">
+        <div className="flex justify-between text-xs font-mono font-bold">
+          <span className="text-red-400 flex items-center space-x-1.5">
             <span>Route 9 (RTO ➔ LD College): {r9Tickets} Tickets ({r9Pct}%)</span>
           </span>
-          <span className="text-emerald-400 font-bold">
+          <span className="text-emerald-400">
             Route 12 (RTO ➔ CTM): {r12Tickets} Tickets ({100 - r9Pct}%)
           </span>
         </div>
 
-        <div className="h-3 w-full rounded-full bg-slate-900 border border-white/10 overflow-hidden flex">
+        <div className="h-3 w-full rounded-full bg-slate-900 border border-white/20 overflow-hidden flex">
           <div
             className="h-full bg-gradient-to-r from-red-600 to-rose-400 transition-all duration-500"
             style={{ width: `${r9Pct}%` }}
@@ -186,8 +186,8 @@ export const StationTicketingMonitor: React.FC = () => {
           />
         </div>
 
-        <p className="text-[10px] text-gray-400 font-mono text-center">
-                  Dispatch Recommendation: Dynamic diversion from Corridor 12 to Corridor 9 will absorb {Math.round(r9Tickets * 0.35)} tickets/hr surge.
+        <p className="text-[10px] text-slate-300 font-mono font-medium text-center">
+          Dispatch Recommendation: Dynamic diversion from Corridor 12 to Corridor 9 will absorb {Math.round(r9Tickets * 0.35)} tickets/hr surge.
         </p>
       </div>
 
@@ -229,13 +229,13 @@ export const StationTicketingMonitor: React.FC = () => {
               </div>
 
               {/* Ticketing Stats */}
-              <div className="grid grid-cols-2 gap-2 text-xs font-mono bg-white/65 p-2.5 rounded-xl border border-slate-200">
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono bg-[#0a192f] p-2.5 rounded-xl border border-white/20">
                 <div>
-                  <span className="text-gray-400 block text-[9px]">TICKETS SOLD (1HR)</span>
+                  <span className="text-slate-300 block text-[9px] font-semibold">TICKETS SOLD (1HR)</span>
                   <span className="text-cyan-300 font-black text-sm">{stop.ticketsSoldLastHour || 120}</span>
                 </div>
                 <div>
-                  <span className="text-gray-400 block text-[9px]">WAITING AT TURNSTILE</span>
+                  <span className="text-slate-300 block text-[9px] font-semibold">WAITING AT TURNSTILE</span>
                   <span className={`font-black text-sm ${stop.waitingPassengers && stop.waitingPassengers > 80 ? 'text-red-400' : 'text-emerald-400'}`}>
                     {stop.waitingPassengers || 15} Pax
                   </span>
@@ -244,7 +244,7 @@ export const StationTicketingMonitor: React.FC = () => {
 
               {/* Live Rush Bar */}
               <div className="space-y-1">
-                <div className="flex justify-between text-[9px] font-mono text-gray-400">
+                <div className="flex justify-between text-[9px] font-mono text-slate-300 font-semibold">
                   <span>Turnstile Capacity Usage</span>
                   <span className="font-bold text-white">
                     {Math.min(100, Math.round(((stop.waitingPassengers || 15) / 120) * 100))}%
