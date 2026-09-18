@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useSimulation } from '../../context/SimulationContext';
 import { RouteReferencePanel } from '../../components/Routes/RouteReferencePanel';
+import { DivertedBusesPanel } from '../../components/Analytics/DivertedBusesPanel';
 import { BRTS_ROUTES } from '../../data/routeCatalog';
 import { 
   Smartphone, 
@@ -293,7 +294,8 @@ export default function CommuterPage() {
 
       </div>
 
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md space-y-4">
+        <DivertedBusesPanel compact />
         <RouteReferencePanel compact />
       </div>
 

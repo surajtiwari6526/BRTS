@@ -5,6 +5,8 @@ import * as XLSX from 'xlsx';
 import { useSimulation } from '../../context/SimulationContext';
 import { RouteReferencePanel } from '../../components/Routes/RouteReferencePanel';
 import { TransitImpactPanel } from '../../components/Analytics/TransitImpactPanel';
+import { DivertedBusesPanel } from '../../components/Analytics/DivertedBusesPanel';
+import { CustomDiversionForm } from '../../components/Dispatch/CustomDiversionForm';
 import { ScenarioLab } from '../../components/Analytics/ScenarioLab';
 import { 
   Cpu, 
@@ -153,6 +155,8 @@ export default function DispatchEnginePage() {
         </div>
       </div>
 
+      <CustomDiversionForm />
+      <DivertedBusesPanel />
       <RouteReferencePanel />
       <TransitImpactPanel />
       <ScenarioLab />

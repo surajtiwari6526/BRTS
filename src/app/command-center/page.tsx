@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { useSimulation } from '../../context/SimulationContext';
 import { StationTicketingMonitor } from '../../components/Analytics/StationTicketingMonitor';
 import { FleetOptimizationMonitor } from '../../components/Analytics/FleetOptimizationMonitor';
+import { FleetStatusOverview } from '../../components/Analytics/FleetStatusOverview';
 import { RouteReferencePanel } from '../../components/Routes/RouteReferencePanel';
 import { TransitImpactPanel } from '../../components/Analytics/TransitImpactPanel';
 import { ScenarioLab } from '../../components/Analytics/ScenarioLab';
@@ -287,6 +288,9 @@ export default function CommandCenterPage() {
         </div>
 
       </div>
+
+      {/* Comprehensive BRTS Fleet & Location Overview */}
+      <FleetStatusOverview />
 
       {/* Fleet sizing and low-rush bus optimization */}
       <FleetOptimizationMonitor />
