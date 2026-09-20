@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getSupabaseAdminClient } from '../../../../../lib/supabase/server';
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,6 +14,34 @@ export async function POST(req: NextRequest) {
     }
 
     const assignedTarget = targetRoute || 'ROUTE_9_EXPRESS';
+    const supabase = getSupabaseAdminClient();
+
+    if (supabase) {
+      const { data: updatedBus } = await supabase
+        .from('buses')
+        .update({
+          is_diverted: true,
+          diverted_to: assignedTarget,
+          status: 'UNDERUTILIZED',
+          path_index: 0,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', busId)
+        .select('id, bus_number, route_id')
+        .maybeSingle();
+
+      if (updatedBus) {
+        await supabase.from('dispatch_logs').insert({
+          id: `LOG-${Date.now()}`,
+          bus_id: updatedBus.id,
+          bus_number: updatedBus.bus_number,
+          source_route: sourceRoute || updatedBus.route_id,
+          target_route: assignedTarget,
+          dpr: 3.4,
+          benefit_inr: 4820
+        });
+      }
+    }
 
     return NextResponse.json({
       status: 'SUCCESS',

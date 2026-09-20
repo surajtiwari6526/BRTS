@@ -1,8 +1,39 @@
 import { NextResponse } from 'next/server';
 import { INITIAL_BUSES } from '../../../../data/initialDataset';
+import { getSupabaseAdminClient } from '../../../../lib/supabase/server';
+
+function mapBusRow(row: Record<string, unknown>) {
+  return {
+    id: row.id as string,
+    busNumber: row.bus_number as string,
+    routeId: row.route_id as string,
+    routeName: row.route_name as string,
+    currentStop: row.current_stop as string,
+    lat: row.latitude as number,
+    lng: row.longitude as number,
+    heading: row.heading as number,
+    speedKmph: row.speed_kmph as number,
+    capacity: row.capacity as number,
+    currentPassengers: row.current_passengers as number,
+    plfPercent: row.plf_percent as number,
+    status: row.status as typeof INITIAL_BUSES[number]['status'],
+    isDiverted: row.is_diverted as boolean,
+    divertedTo: row.diverted_to as string | undefined,
+    pathIndex: row.path_index as number | undefined
+  };
+}
 
 export async function GET() {
   const timestamp = Math.floor(Date.now() / 1000);
+  const supabase = getSupabaseAdminClient();
+  let buses = INITIAL_BUSES;
+
+  if (supabase) {
+    const { data, error } = await supabase.from('buses').select('*').order('id');
+    if (!error && data?.length) {
+      buses = data.map(mapBusRow);
+    }
+  }
 
   const gtfsRtFeed = {
     header: {
@@ -10,7 +41,7 @@ export async function GET() {
       incrementality: "FULL_DATASET",
       timestamp: timestamp
     },
-    entity: INITIAL_BUSES.map((bus) => ({
+    entity: buses.map((bus) => ({
       id: bus.id,
       vehicle: {
         trip: {
@@ -37,8 +68,8 @@ export async function GET() {
   return NextResponse.json({
     status: 'success',
     timestamp: new Date().toISOString(),
-    totalBuses: INITIAL_BUSES.length,
-    buses: INITIAL_BUSES,
+    totalBuses: buses.length,
+    buses,
     gtfsRt: gtfsRtFeed
   });
 }

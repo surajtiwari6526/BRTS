@@ -15,7 +15,9 @@ import {
   CheckCircle2,
   Route as RouteIcon,
   ArrowRightLeft,
-  Bus as BusIcon
+  Bus as BusIcon,
+  Menu,
+  X
 } from 'lucide-react';
 import { useSimulation } from '../context/SimulationContext';
 
@@ -23,6 +25,7 @@ export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const { isSimulating, toggleSimulation, resetSimulation, lastAlert, clearAlert, weatherFactor } = useSimulation();
   const [timeString, setTimeString] = useState<string>('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -33,6 +36,10 @@ export const Navbar: React.FC = () => {
     const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   const navItems = [
     { label: 'Command Center', href: '/command-center', icon: Activity },
@@ -47,10 +54,10 @@ export const Navbar: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-xl shadow-sm">
-      <div className="flex min-h-16 items-center justify-between gap-4 px-4 py-2 lg:px-8">
+      <div className="flex min-h-16 flex-wrap items-center justify-between gap-4 px-4 py-2 lg:px-8">
         
         {/* Brand */}
-        <div className="flex items-center">
+        <div className="min-w-0 flex-1 items-center">
           <div>
             <div className="flex items-center space-x-2">
               <span className="font-mono text-lg font-black tracking-wider text-[#0F172A]">
@@ -89,8 +96,18 @@ export const Navbar: React.FC = () => {
           })}
         </nav>
 
+        <button
+          type="button"
+          onClick={() => setIsMobileMenuOpen((open) => !open)}
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-slate-700 md:hidden"
+          aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={isMobileMenuOpen}
+        >
+          {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+
         {/* Telemetry & Controls */}
-        <div className="flex items-center space-x-3">
+        <div className="flex w-full items-center justify-between border-t border-slate-200 pt-2 md:w-auto md:justify-start md:space-x-3 md:border-t-0 md:pt-0">
           
           {/* Weather Widget */}
           <div className="hidden lg:flex items-center space-x-2 rounded-xl bg-slate-100 px-3 py-1.5 border border-slate-200 text-xs text-slate-800">
@@ -128,6 +145,28 @@ export const Navbar: React.FC = () => {
         </div>
 
       </div>
+
+      {isMobileMenuOpen && (
+        <nav className="border-t border-slate-200 bg-white px-4 py-3 md:hidden">
+          <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = pathname === item.href || (pathname === '/' && item.href === '/command-center') || (pathname === '/dashboard' && item.href === '/command-center') || (pathname === '/dispatch' && item.href === '/dispatch-engine') || (pathname === '/driver' && item.href === '/driver-hud') || (pathname === '/diverted' && item.href === '/diverted-buses') || (pathname === '/buses' && item.href === '/fleet-overview');
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-bold ${isActive ? 'bg-orange-600 text-white' : 'text-slate-700 hover:bg-slate-100'}`}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+      )}
 
       {/* Reroute Alert Toast Banner */}
       {lastAlert && (

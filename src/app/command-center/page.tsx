@@ -142,10 +142,10 @@ export default function CommandCenterPage() {
       <ScenarioLab />
 
       {/* Main Viewport Container */}
-      <div className="grid min-h-[540px] grid-cols-1 lg:grid-cols-12 gap-4 h-[min(540px,70vh)] lg:h-[540px] shrink-0">
+      <div className="grid min-h-0 grid-cols-1 gap-4 lg:grid-cols-12 lg:h-[540px] shrink-0">
         
         {/* Full-Screen Map Viewport */}
-        <div className="lg:col-span-8 h-full relative overflow-hidden rounded-2xl border border-slate-200">
+        <div className="h-[540px] lg:col-span-8 lg:h-full relative overflow-hidden rounded-2xl border border-slate-200">
           <BusMap
             buses={buses}
             selectedBusId={selectedBusId}
@@ -155,7 +155,7 @@ export default function CommandCenterPage() {
         </div>
 
         {/* Sidebar Telemetry Control Panel */}
-        <div className="lg:col-span-4 flex flex-col h-full glass-card rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
+        <div className="min-h-[540px] lg:col-span-4 lg:h-full flex flex-col glass-card rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm">
           
           {/* Header & Controls */}
           <div className="p-3 border-b border-slate-200 space-y-2.5 shrink-0 bg-slate-50">
